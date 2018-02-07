@@ -1,0 +1,42 @@
+<p>
+  calendar works!
+</p>
+
+<div class="col-xl-12, calendar-size">
+  <button (click)= "prevMonth()">Prev Month</button>
+
+  <h1>{{calDisplay}}</h1>
+
+  <button (click)= "nextMonth()">Next Month</button>
+
+  <br>
+
+  <div class="calendar-header-days" *ngFor="let day of daysInMonth">
+    {{day.dayNum}} 
+    <br>
+    {{day.dayString}} 
+  </div>
+<br>
+
+<div class="list-group-item text-muted" *ngFor = "let resource of resources | async">
+  <div class="calendar-row" id="{{day.dateID}}"  *ngFor="let day of daysInMonth">
+
+  </div>
+</div>
+
+</div>
+
+
+
+
+
+<ul class="list-group">
+          <li class="list-group-item text-muted" *ngFor = "let resource of resources | async" 
+          (click) = "getPost(resource.id) ; activeItem= resource.data.name" [ngClass]="{active: activeItem ===  resource.data.name}" 
+          >
+              <!-- (click) ="activeItem= dbResource.name" [ngClass]="{active: activeItem === dbResource.name}" -->
+            <strong>{{resource.data.name}}</strong>
+            <br>
+            {{resource.data.note}}
+          </li>
+        </ul>
