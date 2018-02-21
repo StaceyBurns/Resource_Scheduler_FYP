@@ -1,7 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
-/* @import "../node_modules/fullcalendar/dist/fullcalendar.min.css"; */
+ @import "../node_modules/fullcalendar/dist/fullcalendar.min.css";
 
-
+.even { background-color:pink; }
+.odd { background-color:lightgoldenrodyellow; }
 .full-height {
     height: 100%;
     min-height: 1000px;
@@ -18,16 +19,56 @@
 .resource-heading-schedule{
   height: 40px;
 }
-.calendar-header-days{
+#customCal .calendar-header-days{
   display: inline-block;
-  width: 7%;
+  width: 200px;
+  height: 60px;
+  color: whitesmoke;
+  text-align: center;
 }
-.calendar-row{
+#customCal .calendar-row{
   display: inline-block;
-  width: 7%;
+
+  border: 1px solid #ccccff;
 }
-.calendar-size {
-  background-color: #3f3;
+
+#customCal .calendar-size {
+  background-color:  #9999ff;
   overflow: auto;
   white-space: nowrap;
+} 
+#customCal table, .calendar-size {
+  width: 100%;
+  display: block;
+  overflow-x: auto;
+  white-space: nowrap;
 }
+#customCal .calendar-row-size {
+  background-color: #3f3;
+  overflow: auto;
+  width: 100%;
+} 
+
+#customCal th{
+  width: 200px;
+  background-color: purple;
+  border: 3px orange;
+
+}
+#customCal .calendar-resource-head{
+  background-color: purple;
+  color: whitesmoke;
+  font-weight: bold;
+}
+#customCal tr{
+  /* background-color:red; */
+}
+#customCal td{
+  background-color: #ebf0fa;
+  color: #b30047;
+  font-weight: bold;
+  border: 1px #03f3;
+  width: 200px;
+  height:40px;
+  text-align: center;
+} 

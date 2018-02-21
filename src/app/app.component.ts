@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map'
+import {Router} from "@angular/router";
 
 interface Resource{
   name:string;
@@ -40,7 +41,7 @@ export class AppComponent {
 
     
  
-      console.log(afs);
+      // console.log(afs);
       this.dbResources = afs.collection('resource').valueChanges();
 
   }

@@ -19,7 +19,7 @@ export class ScheduleComponent implements OnInit {
 
   dbResources: Observable<any[]>;
   constructor(af:AngularFirestore) {
-    console.log(af);
+    // console.log(af);
     this.dbResources = af.collection('resource').valueChanges();
 }
 

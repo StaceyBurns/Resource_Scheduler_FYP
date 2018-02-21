@@ -1,27 +1,39 @@
 import { Component, OnInit, Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map'
+import 'rxjs/add/operator/map';
+import {Resource} from '../interfaces/interfaces';
+import {ResourceId} from '../interfaces/interfaces';
+import { resource } from 'selenium-webdriver/http';
 
-interface Resource{
-  name:string;
-  note:string;
-}
 
-interface ResourceId extends Resource{
-  id:string;
-}
+
+// interface Resource{
+//   name:string;
+//   note:string;
+//   date:string;
+// }
+
+// interface ResourceId extends Resource{
+//   id:string;
+// }
 @Injectable()
 export class DatabaseService implements OnInit {
 
   resourcesCol:AngularFirestoreCollection<Resource>;
   resources:any;
 
-  name:string;
-  note:string;
+  // name:string;
+  // note:string;
+  // date:string;
+  // id:string;
+  // chosenResource:any;
 
   resourceDoc:AngularFirestoreDocument<Resource>;
   resource:Observable<Resource>;
+  selectedResource:string;
+
+  calResources: any;
 
   constructor(private afs:AngularFirestore){
 
@@ -37,23 +49,57 @@ export class DatabaseService implements OnInit {
           return{id,data};
         })
       })
+      this.calResources =[];
+      this.getData(this.calResources);
   }
 
-  addPost(){
+  addPost(name, note){
     var idName = "my-custom-id";
-    this.afs.collection('resource').add({'name':this.name, 'note':this.note});
+    this.afs.collection('resource').add({
+      name: name, 
+      note: note
+    });
   }
 
   getPost(resourceId){
     this.resourceDoc = this.afs.doc('resource/'+resourceId);
     this.resource = this.resourceDoc.valueChanges();
+    this.selectedResource = resourceId;
   }
 
   deletePost(resourceId){
     this.afs.doc('resource/'+resourceId).delete();
   }
+  editResource(name, note){
+    this.afs.collection('resource/').doc(this.selectedResource).update({
+      name: name,
+      note: note
+  });
+  // console.log(this.selectedResource);
+  }  
+
+
+getData(calResources){
+  return this.afs.collection("resource").ref.get().then(function(querySnapshot) {
+    querySnapshot.forEach(function(doc) {
+        // doc.data() is never undefined for query doc snapshots
+        // console.log(doc.id, " => ", doc.data());
+        calResources.push(doc.data());
+        console.log(calResources);
+        console.log('from db service');
+        console.log(calResources[0]);
+    });
+});
+}
+
+
+
 
 }
+
+
+
+
 
 
 

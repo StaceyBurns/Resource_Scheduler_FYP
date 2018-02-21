@@ -27,8 +27,7 @@ export class CalendarComponent implements OnInit {
     this.db.ngOnInit();
     this.resources = this.db.resources;
     this.resource = this.db.resource;
-    console.log('Resources: ' +this.resources);
-    console.log('Resource: ' +this.resource);
+
  
   }
   dayString: any;
@@ -62,14 +61,14 @@ for (let i = 1; i < 32; i++) {
      dateID: dateID
   };
   this.daysInMonth.push(newDay);
-  console.log("date ID " +dateID);
+  // console.log("date ID " +dateID);
 }
 }
 
 prevMonth(){
   this.monthNum --;
   this.updateDate();
-  console.log('month ' +this.monthNum);
+  // console.log('month ' +this.monthNum);
 }
 
 nextMonth(){
@@ -88,9 +87,9 @@ updateDate() {
   this.monthString = this.months[this.monthNum];
   // this.calDisplay = this.dayString + ',' + this.dayNum + ',' + this.monthString + ',' + this.year;
   this.calDisplay = this.monthString + ',' + this.year;
-  console.log(moment(this.year + '-' + this.monthNum, "YYYY-MM").daysInMonth())
-  console.log(this.daysInMonth);
-  console.log(this.d);
+  // console.log(moment(this.year + '-' + this.monthNum, "YYYY-MM").daysInMonth())
+  // console.log(this.daysInMonth);
+  // console.log(this.d);
   this.getDays();
 }
 

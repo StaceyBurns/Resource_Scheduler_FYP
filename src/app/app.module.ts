@@ -8,9 +8,8 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 
 import {FormsModule} from '@angular/forms';
 
-import { ResourceListComponent } from './resources/resource-list/resource-list.component';
+
 import { ResourcesComponent } from './resources/resources.component';
-import { ResourceItemComponent } from './resources/resource-item/resource-item.component';
 import { ResourceDetailComponent } from './resources/resource-detail/resource-detail.component';
 import { ResourceEditComponent } from './resources/resource-edit/resource-edit.component';
 import { ProjectListComponent } from './projects/project-list/project-list.component';
@@ -29,6 +28,11 @@ import { CalendarComponent } from './calendar/calendar.component';
 import { CalendarRowComponent } from './calendar/calendar-row/calendar-row.component';
 import { DatabaseService } from './shared/database/database.service';
 
+import {routing} from './app.routing';
+import { ResourceAddComponent } from './resources/resource-add/resource-add.component';
+import { CalendarOverviewComponent } from './calendar/calendar-overview/calendar-overview.component';
+
+import {CalendarModule} from "ap-angular2-fullcalendar";
  
 var firebaseConfig = {
   apiKey: "AIzaSyD-mgAQdIx5NYBpWgXyfnV4caztBgS4ylQ",
@@ -43,8 +47,6 @@ var firebaseConfig = {
 @NgModule({
   declarations: [
     AppComponent,
-    ResourceListComponent,
-    ResourceItemComponent,
     ResourceDetailComponent,
     ResourceEditComponent,
     ProjectListComponent,
@@ -56,7 +58,10 @@ var firebaseConfig = {
     DropdownDirective,
     ScheduleComponent,
     CalendarComponent,
-    CalendarRowComponent
+    CalendarRowComponent,
+    ResourceAddComponent,
+    CalendarOverviewComponent,
+    CalendarComponent
   ],
   imports: [
     BrowserModule,
@@ -64,7 +69,9 @@ var firebaseConfig = {
     AngularFirestoreModule,
     AngularFireAuthModule,
     FormsModule,
-    MomentModule
+    MomentModule, 
+    CalendarModule,
+    routing
   ],
   providers: [DatabaseService],
   bootstrap: [AppComponent],

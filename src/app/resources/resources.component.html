@@ -5,51 +5,30 @@
       <button class="btn btn-success" (click) ="activeItem = 'addResource'">New Resource</button>
       <br> <br> <br>
       <ul class="list-group">
-          <li class="list-group-item text-muted" *ngFor = "let resource of resources | async" (click) = "getPost(resource.id) ; activeItem= resource.data.name" [ngClass]="{active: activeItem ===  resource.data.name}" >
-              <!-- (click) ="activeItem= dbResource.name" [ngClass]="{active: activeItem === dbResource.name}" -->
-            <strong>{{resource.data.name}} (<a href="#"(click)="deletePost(resource.id)" class="text-danger">Delete</a>)</strong>
+          <li class="list-group-item text-muted" *ngFor = "let resource of resources | async" (click) = "getPost(resource.id) ; activeItem= resource.data.name ; editMode = false" [ngClass]="{active: activeItem ===  resource.data.name}" >
+            <strong>{{resource.data.name}} (<button (click)="deletePost(resource.id)" class="text-danger">Delete</button>)</strong>
             <br>
             {{resource.data.note}}
           </li>
-        </ul>
-
+      </ul>
+  </div>
+  
+  <div *ngIf="activeItem !='addResource' ; else showAddResource" class="col-sm-8 bg-info text-white full-height">
+      <div *ngIf="editMode !=true ; else showEditResource" class="col-sm-8 bg-info text-white full-height">
+          <app-resource-detail [resource]='resource'></app-resource-detail>
+          <br>
+          <button class="btn btn-info" (click)="editMode = true">Edit</button>
+  </div>
+  <ng-template #showEditResource > 
+      <app-resource-edit [resource]='resource'></app-resource-edit>
+  </ng-template>
 
   </div>
-  <div *ngIf="activeItem !='addResource' ; else showAddResource" class="col-sm-8 bg-info text-white full-height">
-      <h1>{{ ( resource | async)?.name }}</h1>
-
-      <h3>No resource selected</h3>
-      <p>{{ ( resource | async)?.note }}</p>
-      </div>
       
-
     <ng-template #showAddResource > 
-      <div class="col-sm-8 bg-info text-white full-height">
-          <!-- <input type="text" [(ngModel)] = "name" name="name" placeholder = "Name...">
-          <textarea [(ngModel)]="note" name="note" placeholder="Note..."></textarea>
-          <input type="submit" value="Add a resource" (click)="addPost()"> -->
-
-
-
-          <form>
-              <div class="form-group">
-                <label for="name">Resource Name</label>
-                <input type="text" [(ngModel)] = "name" class="form-control" name="name" placeholder = "Name...">
-              </div>
-              <div class="form-group">
-                <label for="note">Notes</label>
-                <textarea [(ngModel)]="note" class="form-control" id="note" rows="3" name="note" placeholder="Notes..."></textarea>
-                <small id="notesInfo" class="form-text text-muted">Add some notes about this resource</small>
-              </div>
-              <button type="submit" class="btn btn-primary" value="Add a resource" (click)="addPost()">Save</button>
-            </form>
-
-
-      </div>
-      <p>No resource selected</p>
+        <app-resource-add></app-resource-add>
     </ng-template>
   </div>
-
 
 
 

@@ -1,49 +1,9 @@
 <app-header (featureSelected)="onNavigate($event)"></app-header>
 <div class="container-fluid container-full">
     <div class="col-sm-12 bg-success text-white full-height container-fluid container-full">
-        <app-resources *ngIf="loadedFeature==='resources'"></app-resources>
-        <app-project-detail *ngIf="loadedFeature==='projects'"></app-project-detail>
-        <app-schedule *ngIf="loadedFeature==='schedule'"></app-schedule>
-        <!-- Projects is placeholder! need projects component
-        Can set to (e.g "!resources") to catch any requests that aren't met -->
+        <router-outlet></router-outlet>
     </div>
 
 </div>
 
 <app-calendar></app-calendar>
-
-
-
- <!-- <ul>
-  <li class="text" *ngFor="let dbResource of dbResources | async">
-    {{dbResource.name}}
-  </li>
-</ul> -->
-<!--
-<input type="text" ng-model="clickMessage">
-<br>
-
-<button (click)="addtoDB()">Add something to the DB!</button> -->
-
-<!-- <hr>
-<hr>
-<hr>
-<hr>
-<hr> -->
-
-<!-- <input type="text" [(ngModel)] = "name" name="name" placeholder = "Name...">
-<textarea [(ngModel)]="note" name="note" placeholder="Note..."></textarea>
-<input type="submit" value="Add a resource" (click)="addPost()">
-
-<ul *ngFor = "let resource of resources | async">
-  <li (click) = "getPost(resource.id)">
-    <strong>{{resource.data.name}} (<a href="#"(click)="deletePost(resource.id)">Delete</a>)</strong>
-    <br>
-    {{resource.data.note}}
-  </li>
-</ul>
-
-<h1>A specific resource</h1>
-
-<h3>{{ ( resource | async)?.name }}</h3>
-<p>{{ ( resource | async)?.note }}</p> -->

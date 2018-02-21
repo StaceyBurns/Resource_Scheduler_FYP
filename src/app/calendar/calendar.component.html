@@ -1,42 +1,79 @@
-<p>
+<!-- <p>
   calendar works!
 </p>
 
 <div class="col-xl-12, calendar-size">
-  <button (click)= "prevMonth()">Prev Month</button>
+    <button (click)= "prevMonth()">Prev Month</button>
 
-  <h1>{{calDisplay}}</h1>
+    <h1>{{calDisplay}}</h1>
 
-  <button (click)= "nextMonth()">Next Month</button>
+    <button (click)= "nextMonth()">Next Month</button>
 
+    <br>
+
+    <div class="calendar-header-days" *ngFor="let day of daysInMonth">
+      {{day.dayNum}} 
+      <br>
+      {{day.dayString}} 
+    </div>
   <br>
 
-  <div class="calendar-header-days" *ngFor="let day of daysInMonth">
-    {{day.dayNum}} 
-    <br>
-    {{day.dayString}} 
+  <div class="list-group-item text-muted alendar-row-size" *ngFor = "let resource of resources | async ; let odd=odd; let even=even;" [ngClass]="{ odd: odd, even: even }">
+    <div class="calendar-row" id="{{day.dateID}}"  *ngFor="let day of daysInMonth">
+      <div *ngIf="day.dateID===resource.data.date">Match!!</div>
+      {{day.dateID}} <br>
+      {{resource.data.date}} 
+    </div>
   </div>
-<br>
 
-<div class="list-group-item text-muted" *ngFor = "let resource of resources | async">
-  <div class="calendar-row" id="{{day.dateID}}"  *ngFor="let day of daysInMonth">
+</div> -->
 
-  </div>
+
+
+
+
+<p>
+    calendar works!
+  </p>
+  
+  <div id="customCal">
+    <table class="calendar-size">
+      <thead>
+    <tr>
+      <!-- <th>Empty...</th> -->
+      <th class="col-xl-12 calendar-size">
+          <button (click)= "prevMonth()">Prev Month</button>
+      
+          <h1>{{calDisplay}}</h1>
+      
+          <button (click)= "nextMonth()">Next Month</button>
+      </th>
+    </tr>
+
+
+    <tr>
+      <!-- <th>Empty..</th> -->
+      <th scope="col" class="calendar-header-days"></th> 
+        <th scope="col" class="calendar-header-days" *ngFor="let day of daysInMonth">
+          
+          {{day.dayNum}} 
+          <br>
+          {{day.dayString}} 
+        </th>
+    </tr>
+  </thead>
+
+      <tr class="list-group-item text-muted" *ngFor = "let resource of resources | async">  
+        <!-- <th> Empty..</th> -->
+        <td class="calendar-row calendar-resource-head">{{resource.data.name}}</td>
+        
+        <td class="calendar-row" id="{{day.dateID}}"  *ngFor="let day of daysInMonth">
+          <p *ngIf="day.dateID===resource.data.date">Match!!</p>
+          <!-- {{day.dateID}} <br>
+          {{resource.data.date}}  -->
+          </td>
+    
+    
+        </tr>
+    </table>
 </div>
-
-</div>
-
-
-
-
-
-<ul class="list-group">
-          <li class="list-group-item text-muted" *ngFor = "let resource of resources | async" 
-          (click) = "getPost(resource.id) ; activeItem= resource.data.name" [ngClass]="{active: activeItem ===  resource.data.name}" 
-          >
-              <!-- (click) ="activeItem= dbResource.name" [ngClass]="{active: activeItem === dbResource.name}" -->
-            <strong>{{resource.data.name}}</strong>
-            <br>
-            {{resource.data.note}}
-          </li>
-        </ul>

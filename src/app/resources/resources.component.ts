@@ -1,16 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input} from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
+import {DatabaseService} from '../shared/database/database.service';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map'
-
-interface Resource{
-  name:string;
-  note:string;
-}
-
-interface ResourceId extends Resource{
-  id:string;
-}
+import 'rxjs/add/operator/map';
+import {Resource} from '../shared/interfaces/interfaces';
+import {ResourceId} from '../shared/interfaces/interfaces';
 
 @Component({
   selector: 'app-resources',
@@ -19,46 +13,30 @@ interface ResourceId extends Resource{
 })
 
 export class ResourcesComponent implements OnInit {
-  //selectedResource:Resource;
   activeItem ='';
+  editMode: boolean;
 
-  resourcesCol:AngularFirestoreCollection<Resource>;
-  resources:any;
-
-  name:string;
-  note:string;
-
-  resourceDoc:AngularFirestoreDocument<Resource>;
-  resource:Observable<Resource>;
-
-  constructor(private afs:AngularFirestore){
-
+  constructor(private db: DatabaseService){
   }
 
   ngOnInit(){
-    this.resourcesCol = this.afs.collection('resource');
-    this.resources = this.resourcesCol.snapshotChanges()
-      .map(actions=>{
-        return actions.map(a=> {
-          const data = a.payload.doc.data() as Resource;
-          const id = a.payload.doc.id;
-          return{id,data};
-        })
-      })
+    this.db.ngOnInit();
+    this.resources = this.db.resources;
+    this.resource = this.db.resource;
   }
-
-  addPost(){
-    var idName = "my-custom-id";
-    this.afs.collection('resource').add({'name':this.name, 'note':this.note});
-  }
+  resources: any;
+  resource: Observable<Resource>;
 
   getPost(resourceId){
-    this.resourceDoc = this.afs.doc('resource/'+resourceId);
-    this.resource = this.resourceDoc.valueChanges();
+    this.db.getPost(resourceId);
+    //this.resource = this.db.resourceDoc.valueChanges(); //updates resource info when resource is clicked, necessary because this isn't fed back from getPost() in db service
+    this.resource = this.db.resource;
   }
-
   deletePost(resourceId){
-    this.afs.doc('resource/'+resourceId).delete();
+    this.db.deletePost(resourceId);
   }
+  addPost(name, note){
+    this.db.addPost(name, note);
 
+  }
 }
