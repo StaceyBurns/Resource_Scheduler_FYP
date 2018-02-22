@@ -50,7 +50,7 @@ export class DatabaseService implements OnInit {
         })
       })
       this.calResources =[];
-      this.getData(this.calResources);
+
   }
 
   addPost(name, note){
@@ -85,9 +85,9 @@ getData(calResources){
         // doc.data() is never undefined for query doc snapshots
         // console.log(doc.id, " => ", doc.data());
         calResources.push(doc.data());
-        console.log(calResources);
-        console.log('from db service');
-        console.log(calResources[0]);
+        // console.log(calResources);
+        // console.log('from db service');
+        // console.log(calResources[0]);
     });
 });
 }
