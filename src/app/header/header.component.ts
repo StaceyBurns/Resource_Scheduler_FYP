@@ -1,5 +1,7 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 //import { EventEmitter } from 'selenium-webdriver';
+import { AuthService } from '../core/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -8,7 +10,8 @@ import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor() { }
+  constructor(private authService: AuthService, private router: Router) {
+  }
 
   ngOnInit() {
   }
@@ -16,5 +19,10 @@ export class HeaderComponent implements OnInit {
    onSelect(feature:string){
     this.featureSelected.emit(feature);
    }
+
+   logout() {
+    this.authService.signOut();
+    this.router.navigate(['/login']);
+  }
 
 }

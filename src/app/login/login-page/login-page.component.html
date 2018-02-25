@@ -1,0 +1,27 @@
+<div *ngIf="!(auth.user | async); else alreadyLoggedIn">
+
+  <h3>Social Login</h3>
+
+    <button (click)="signInWithGoogle()" class="button btn-social btn-google">
+      <i class="fa fa-google fa-lg"></i> Connect Google
+    </button>
+
+    <hr>
+
+    <h3>Anonymous Login</h3>
+
+      <button (click)="signInAnonymously()" class="button button-info">
+        <i class="fa fa-user-secret fa-lg"></i> Connect Anonymously
+      </button>
+
+    <hr>
+
+    <register-page></register-page>
+
+</div>
+
+<ng-template #alreadyLoggedIn>
+  <p class="text-success">
+    Already logged in!
+  </p>
+</ng-template>

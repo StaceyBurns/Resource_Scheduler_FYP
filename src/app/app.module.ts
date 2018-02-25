@@ -5,6 +5,7 @@ import { AppComponent } from './app.component';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireAuthModule } from 'angularfire2/auth';
+import { CoreModule } from './core/core.module';
 
 import {FormsModule} from '@angular/forms';
 
@@ -21,8 +22,6 @@ import { DropdownDirective } from './shared/dropdown.directive';
 import { ScheduleComponent } from './schedule/schedule.component';
 
 
-import {AccordionModule} from 'primeng/accordion';
-import {MenuItem} from 'primeng/api';  
 import { MomentModule } from 'angular2-moment';
 import { CalendarComponent } from './calendar/calendar.component';
 import { CalendarRowComponent } from './calendar/calendar-row/calendar-row.component';
@@ -33,7 +32,14 @@ import { ResourceAddComponent } from './resources/resource-add/resource-add.comp
 import { CalendarOverviewComponent } from './calendar/calendar-overview/calendar-overview.component';
 
 import {CalendarModule} from "ap-angular2-fullcalendar";
- 
+import { UserProfileComponent } from './user-profile/user-profile.component';
+import { AuthService } from './core/auth.service';
+import { AuthGuard } from './core/auth.guard';
+import { LoginPageComponent } from './login/login-page/login-page.component';
+import { RegisterPageComponent } from './login/register-page/register-page.component';
+import {ReactiveFormsModule} from "@angular/forms";
+import { NotificationMessageComponent } from './notification-message/notification-message.component';
+
 var firebaseConfig = {
   apiKey: "AIzaSyD-mgAQdIx5NYBpWgXyfnV4caztBgS4ylQ",
   authDomain: "leash-prototype.firebaseapp.com",
@@ -61,19 +67,25 @@ var firebaseConfig = {
     CalendarRowComponent,
     ResourceAddComponent,
     CalendarOverviewComponent,
-    CalendarComponent
+    CalendarComponent,
+    UserProfileComponent,
+    LoginPageComponent,
+    RegisterPageComponent,
+    NotificationMessageComponent
   ],
   imports: [
     BrowserModule,
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFirestoreModule,
     AngularFireAuthModule,
+    CoreModule,
     FormsModule,
     MomentModule, 
     CalendarModule,
-    routing
+    routing,
+    ReactiveFormsModule
   ],
-  providers: [DatabaseService],
+  providers: [DatabaseService, AuthService, AuthGuard],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

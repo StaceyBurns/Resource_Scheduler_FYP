@@ -6,34 +6,19 @@ import {Resource} from '../interfaces/interfaces';
 import {ResourceId} from '../interfaces/interfaces';
 import { resource } from 'selenium-webdriver/http';
 
-
-
-// interface Resource{
-//   name:string;
-//   note:string;
-//   date:string;
-// }
-
-// interface ResourceId extends Resource{
-//   id:string;
-// }
 @Injectable()
 export class DatabaseService implements OnInit {
 
   resourcesCol:AngularFirestoreCollection<Resource>;
   resources:any;
 
-  // name:string;
-  // note:string;
-  // date:string;
-  // id:string;
-  // chosenResource:any;
-
   resourceDoc:AngularFirestoreDocument<Resource>;
   resource:Observable<Resource>;
   selectedResource:string;
 
   calResources: any;
+
+  loadedCompany:string;
 
   constructor(private afs:AngularFirestore){
 
@@ -78,6 +63,15 @@ export class DatabaseService implements OnInit {
   // console.log(this.selectedResource);
   }  
 
+  registerCompany(user, company){
+    this.afs.collection('companies/').add({
+      company: company,
+      user: user,
+    });
+    console.log('company info added!!');
+    this.loadedCompany = company;
+  }
+
 
 getData(calResources){
   return this.afs.collection("resource").ref.get().then(function(querySnapshot) {
@@ -85,9 +79,6 @@ getData(calResources){
         // doc.data() is never undefined for query doc snapshots
         // console.log(doc.id, " => ", doc.data());
         calResources.push(doc.data());
-        // console.log(calResources);
-        // console.log('from db service');
-        // console.log(calResources[0]);
     });
 });
 }
