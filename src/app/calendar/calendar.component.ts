@@ -20,9 +20,11 @@ export class CalendarComponent implements OnInit {
     this.dayString = this.days[this.d.getDay()];
     this.dayNum = this.d.getDate();
     this.monthNum = this.d.getMonth();
+    this.monthNum = 2; //get rid of this
     this.monthString = this.months[this.d.getMonth()];
     this.year = this.d.getFullYear();
     this.updateDate();
+    this.getMonthLength();
     this.getDays();
     this.db.ngOnInit();
     this.resources = this.db.resources;
@@ -46,9 +48,11 @@ days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 months = ["NaM", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 daysInMonth =[];
 
+monthLength:number;
+
 getDays(){
 this.daysInMonth = [];
-for (let i = 1; i < 32; i++) {
+for (let i = 1; i < this.monthLength; i++) {
   var date = new Date(this.monthString + i + ',' + this.year);
   var dateID = i+"" +"" + this.monthNum + this.year;
   var dayInMonth = new Date(this.monthNum + i + this.year);
@@ -84,13 +88,27 @@ updateDate() {
     this.monthNum = 12;
     this.year --;
   }
+  console.log('errrrrr'+this.monthString);
   this.monthString = this.months[this.monthNum];
-  // this.calDisplay = this.dayString + ',' + this.dayNum + ',' + this.monthString + ',' + this.year;
   this.calDisplay = this.monthString + ',' + this.year;
-  // console.log(moment(this.year + '-' + this.monthNum, "YYYY-MM").daysInMonth())
-  // console.log(this.daysInMonth);
-  // console.log(this.d);
+  this.getMonthLength();
   this.getDays();
+  
+ 
+}
+
+getMonthLength(){
+  if(this.monthString == 'Jan' || 'Mar' || 'May' || 'Jul' || 'Aug' || 'Oct' || 'Dec'){
+    this.monthLength = 31;
+    console.log('31 days in this month');
+  } else if(this.monthString == 'Feb') {
+    this.monthLength = 29;
+    console.log('29 days in this month');
+  } else{
+    this.monthLength = 30;
+    console.log('30 days in this month');
+  }
+  console.log('get month length')
 }
 
 

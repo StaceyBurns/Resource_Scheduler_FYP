@@ -8,6 +8,7 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import { CoreModule } from './core/core.module';
 
 import {FormsModule} from '@angular/forms';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 
 import { ResourcesComponent } from './resources/resources.component';
@@ -39,6 +40,8 @@ import { LoginPageComponent } from './login/login-page/login-page.component';
 import { RegisterPageComponent } from './login/register-page/register-page.component';
 import {ReactiveFormsModule} from "@angular/forms";
 import { NotificationMessageComponent } from './notification-message/notification-message.component';
+import {MatButtonModule, MatCheckboxModule, MatFormFieldModule, MatDatepickerModule, MatNativeDateModule, MatInputModule} from '@angular/material';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 var firebaseConfig = {
   apiKey: "AIzaSyD-mgAQdIx5NYBpWgXyfnV4caztBgS4ylQ",
@@ -83,7 +86,16 @@ var firebaseConfig = {
     MomentModule, 
     CalendarModule,
     routing,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgbModule.forRoot(),
+    MatButtonModule, 
+    MatCheckboxModule, 
+    MatDatepickerModule, 
+    MatNativeDateModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatInputModule,
+    BrowserAnimationsModule
   ],
   providers: [DatabaseService, AuthService, AuthGuard],
   bootstrap: [AppComponent],

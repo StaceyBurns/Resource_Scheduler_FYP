@@ -83,6 +83,13 @@ getData(calResources){
 });
 }
 
+testAddDate(date, resource){
+  this.afs.collection('schedule').add({
+    date: date, 
+    resource: resource
+  });
+}
+
 
 
 

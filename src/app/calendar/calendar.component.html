@@ -1,37 +1,3 @@
-<!-- <p>
-  calendar works!
-</p>
-
-<div class="col-xl-12, calendar-size">
-    <button (click)= "prevMonth()">Prev Month</button>
-
-    <h1>{{calDisplay}}</h1>
-
-    <button (click)= "nextMonth()">Next Month</button>
-
-    <br>
-
-    <div class="calendar-header-days" *ngFor="let day of daysInMonth">
-      {{day.dayNum}} 
-      <br>
-      {{day.dayString}} 
-    </div>
-  <br>
-
-  <div class="list-group-item text-muted alendar-row-size" *ngFor = "let resource of resources | async ; let odd=odd; let even=even;" [ngClass]="{ odd: odd, even: even }">
-    <div class="calendar-row" id="{{day.dateID}}"  *ngFor="let day of daysInMonth">
-      <div *ngIf="day.dateID===resource.data.date">Match!!</div>
-      {{day.dateID}} <br>
-      {{resource.data.date}} 
-    </div>
-  </div>
-
-</div> -->
-
-
-
-
-
 <p>
     calendar works!
   </p>
@@ -54,7 +20,7 @@
     <tr>
       <!-- <th>Empty..</th> -->
       <th scope="col" class="calendar-header-days"></th> 
-        <th scope="col" class="calendar-header-days" *ngFor="let day of daysInMonth">
+        <th scope="col" class="calendar-header-days" *ngFor="let day of daysInMonth ">
           
           {{day.dayNum}} 
           <br>

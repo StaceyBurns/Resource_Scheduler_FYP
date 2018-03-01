@@ -11,6 +11,7 @@
           <input type="radio" name="projects" id="projects" (click) ="loadedDisplay='projects'"> Projects
         </label>
       </div>
+      
 
     <ul class="list-group text-muted" *ngIf="loadedDisplay==='resources'">
       <li class="text list-group-item schedule-list-resource" *ngFor="let dbResource of dbResources | async">
@@ -23,16 +24,54 @@
           {{dbProject.name}}
         </li>
       </ul>
-      <ul *ngIf="loadedDisplay==='overview'">
+      <div *ngIf="loadedDisplay==='overview'">
         <h1>Show the full view!</h1>
           <!-- <li class="text schedule-list-resource" *ngFor="let dbResource of dbResources | async">
             {{dbResource.name}}
           </li> -->
-          <li>Add directly to the schedule here!</li>
-        </ul>
-</div>
-<div class="col-sm-8 bg-info text-white full-height"><h1 class="text-center">Calendar</h1>
+          <h2>Add directly to the schedule here!</h2>
 
-<app-calendar-overview></app-calendar-overview>
+
+
+
+
+
+
+
+
+
+          <form>
+              Date<br>
+              <input type="date" name="date" #date><br>
+              Resource<br>
+              <select #resource>
+                  <option name="resource" *ngFor="let dbResource of dbResources | async" [value]="dbResource.name">{{dbResource.name}}</option>
+              </select>
+              <input type="submit" (click)="takeForm(date.value, resource.value)">
+            </form>
+
+
+
+
+
+            <pre>
+                <input type="text"  #titleInput>
+                <button type="submit" (click) = 'addTodo(titleInput.value)'>Add</button>
+              </pre>
+        
+        </div>
+
+
+
 </div>
+<div *ngIf="loadedDisplay==='overview'" class="col-sm-8 bg-info text-white full-height"><h1 class="text-center">Calendar</h1>
+
+  <app-calendar-overview></app-calendar-overview>
+</div>
+<div *ngIf="loadedDisplay==='resources'" class="col-sm-8 bg-info text-white full-height">
+<app-calendar></app-calendar>
+</div>
+
+
+
 </div>
