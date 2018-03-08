@@ -24,7 +24,8 @@
   formControlName="company" required >
 
   <div *ngIf="userForm.valid" class="notification is-success">Form is valid</div>
-  <button type="submit" class="button" [disabled]="!userForm.valid">Submit</button>
+  <button type="submit" class="button" [disabled]="!userForm.valid"
+  >Submit</button>
   <hr>
   <p class="btn button is-small" (click)="toggleForm()">Already Registered?</p>
 </form>
@@ -50,7 +51,8 @@
     {{ formErrors.password }}
   </div>
 
-  <button type="submit" class="button" [disabled]="!userForm.valid">Submit</button>
+  <button type="submit" class="button" [disabled]="!userForm.valid"
+  >Submit</button>
 
   <span *ngIf="userForm.valid" class="help is-success">Form Looks Valid</span>
 

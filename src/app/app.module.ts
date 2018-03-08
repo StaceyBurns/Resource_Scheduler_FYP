@@ -97,7 +97,7 @@ var firebaseConfig = {
     MatInputModule,
     BrowserAnimationsModule
   ],
-  providers: [DatabaseService, AuthService, AuthGuard],
+  providers: [DatabaseService, AuthService, AuthGuard, CalendarOverviewComponent],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

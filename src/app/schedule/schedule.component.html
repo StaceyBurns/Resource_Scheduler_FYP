@@ -26,9 +26,6 @@
       </ul>
       <div *ngIf="loadedDisplay==='overview'">
         <h1>Show the full view!</h1>
-          <!-- <li class="text schedule-list-resource" *ngFor="let dbResource of dbResources | async">
-            {{dbResource.name}}
-          </li> -->
           <h2>Add directly to the schedule here!</h2>
 
 
@@ -38,7 +35,7 @@
 
 
 
-
+<!-- -------------------------DATE SELECTION------------------ -->
 
           <form>
               Date<br>
@@ -47,18 +44,10 @@
               <select #resource>
                   <option name="resource" *ngFor="let dbResource of dbResources | async" [value]="dbResource.name">{{dbResource.name}}</option>
               </select>
-              <input type="submit" (click)="takeForm(date.value, resource.value)">
+              <input type="submit" (click)="takeForm(date.value, resource.value)" 
+
+              >
             </form>
-
-
-
-
-
-            <pre>
-                <input type="text"  #titleInput>
-                <button type="submit" (click) = 'addTodo(titleInput.value)'>Add</button>
-              </pre>
-        
         </div>
 
 

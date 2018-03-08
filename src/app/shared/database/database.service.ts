@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import {Resource} from '../interfaces/interfaces';
 import {ResourceId} from '../interfaces/interfaces';
-import { resource } from 'selenium-webdriver/http';
+// import { resource } from 'selenium-webdriver/http';
 
 @Injectable()
 export class DatabaseService implements OnInit {
@@ -37,6 +37,7 @@ export class DatabaseService implements OnInit {
       this.calResources =[];
 
   }
+  
 
   addPost(name, note){
     var idName = "my-custom-id";
@@ -74,7 +75,8 @@ export class DatabaseService implements OnInit {
 
 
 getData(calResources){
-  return this.afs.collection("resource").ref.get().then(function(querySnapshot) {
+  
+  return this.afs.collection("schedule").ref.get().then(function(querySnapshot) {
     querySnapshot.forEach(function(doc) {
         // doc.data() is never undefined for query doc snapshots
         // console.log(doc.id, " => ", doc.data());
@@ -84,14 +86,61 @@ getData(calResources){
 }
 
 testAddDate(date, resource){
-  this.afs.collection('schedule').add({
-    date: date, 
+   this.afs.collection('schedule').add({
+    start: date, 
+    title: resource
+  }).then(function() {
+    console.log('schedule item added')
+  });
+ 
+  return this.afs.collection('resource').add({
+    title: "straight from db",
+    start: date, 
     resource: resource
   });
+  
 }
 
 
 
+getdaydata(){ //returns object matching particular resource
+console.log('should return Gggg');
+this.afs.collection('days')
+  .ref.where('title', '==', 'Gggg')
+  .get()
+  .then(function(querySnapshot) {
+    querySnapshot.forEach(function(doc) {
+      console.log(doc.id, " => ", doc.data());
+    });
+   })
+   .catch(function(error) {
+     console.log("Error getting documents: ", error);
+    });
+}
+
+// delete field data for match
+deleteCalEvent(dateID, resourceTitle){
+  console.log('database DELETE event');
+
+let collectionRef = this.afs.collection('resource');
+collectionRef.ref.where("title", "==", resourceTitle).where("start", "==", dateID)
+.get()
+.then(querySnapshot => {
+  querySnapshot.forEach((doc) => {
+    doc.ref.update({
+      title: '',
+      start: ''
+    }).then(() => {
+      console.log("Document successfully deleted!");
+    }).catch(function(error) {
+      console.error("Error removing document: ", error);
+    });
+  });
+})
+.catch(function(error) {
+  console.log("Error getting documents: ", error);
+});
+}
 
 }
 

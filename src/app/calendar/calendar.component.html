@@ -34,12 +34,18 @@
         <td class="calendar-row calendar-resource-head">{{resource.data.name}}</td>
         
         <td class="calendar-row" id="{{day.dateID}}"  *ngFor="let day of daysInMonth">
-          <p *ngIf="day.dateID===resource.data.date">Match!!</p>
-          <!-- {{day.dateID}} <br>
-          {{resource.data.date}}  -->
+          <!-- <p>{{resource.data?.start}}</p> -->
+          <!-- <P>{{day.dateID}}</P> -->
+          <p *ngIf="day.dateID==resource.data.start">MATCH!!</p>
+          <button (click)="editCalEvent(day.dateID, resource.data.title)"></button>
           </td>
-    
+  
+
+
+
+
     
         </tr>
     </table>
 </div>
+

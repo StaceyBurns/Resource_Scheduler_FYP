@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild} from '@angular/core';
 import * as moment from 'moment';
 import {DatabaseService} from '../shared/database/database.service';
 // import { Observable } from 'rxjs/Observable';
@@ -41,6 +41,9 @@ export class CalendarComponent implements OnInit {
   resources: any;
   resource: any;
 
+  calSelectedDate:any;
+  calSelectedResource:any;
+
 // calDisplay = this.dayString + ',' + this.dayNum + ',' + this.monthString + ',' + this.year;
 calDisplay = this.monthString + ',' + this.year;
 d = new Date();
@@ -53,10 +56,28 @@ monthLength:number;
 getDays(){
 this.daysInMonth = [];
 for (let i = 1; i < this.monthLength; i++) {
+ 
+
   var date = new Date(this.monthString + i + ',' + this.year);
-  var dateID = i+"" +"" + this.monthNum + this.year;
+
   var dayInMonth = new Date(this.monthNum + i + this.year);
+
+  var monthSeperator 
+  if(this.monthNum <=9){
+    monthSeperator = '-0';
+  } else{
+    monthSeperator ='-';
+  }
+
+ if(i<=9){
+  var dateID =+ this.year +monthSeperator+this.monthNum +'-0'+i;
+}else {
+  var dateID =+ this.year + monthSeperator+this.monthNum +'-'+i;
+}
+
   var day = this.days[date.getDay()];
+
+
 
   let newDay = {
      dayNum:i.toString(),
@@ -65,7 +86,7 @@ for (let i = 1; i < this.monthLength; i++) {
      dateID: dateID
   };
   this.daysInMonth.push(newDay);
-  // console.log("date ID " +dateID);
+
 }
 }
 
@@ -98,18 +119,31 @@ updateDate() {
 }
 
 getMonthLength(){
-  if(this.monthString == 'Jan' || 'Mar' || 'May' || 'Jul' || 'Aug' || 'Oct' || 'Dec'){
-    this.monthLength = 31;
-    console.log('31 days in this month');
+  if(this.monthString == 'Jan' || this.monthString == 'Mar' || this.monthString == 'May' || this.monthString == 'Jul' || this.monthString == 'Aug' || this.monthString == 'Oct' || this.monthString == 'Dec'){
+    this.monthLength = 32;
+    console.log(this.monthString);
+    console.log('31 days in this month!!!!!!!!!!!!!!!!!!!!!!!!');
   } else if(this.monthString == 'Feb') {
     this.monthLength = 29;
-    console.log('29 days in this month');
+    console.log('29 days in this month!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
   } else{
-    this.monthLength = 30;
-    console.log('30 days in this month');
+    this.monthLength = 31;
+    console.log('30 days in this month!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
   }
   console.log('get month length')
 }
+
+editCalEvent(dateID, resourceTitle){
+  console.log('day ' + dateID + ' clicked for '+ resourceTitle);
+  this.calSelectedDate = dateID;
+  this.calSelectedResource = resourceTitle;
+  this.deleteCalEvent(dateID, resourceTitle)
+}
+
+deleteCalEvent(dateID, resourceTitle){
+  this.db.deleteCalEvent(dateID, resourceTitle);
+}
+
 
 
 }
