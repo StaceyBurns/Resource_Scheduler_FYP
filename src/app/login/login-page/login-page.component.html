@@ -1,4 +1,5 @@
-<div *ngIf="!(auth.user | async); else alreadyLoggedIn">
+<!-- <div *ngIf="!(auth.user | async); else alreadyLoggedIn"> -->
+  <div>
 
   <h3>Social Login</h3>
 
@@ -8,20 +9,50 @@
 
     <hr>
 
-    <h3>Anonymous Login</h3>
 
-      <button (click)="signInAnonymously()" class="button button-info">
-        <i class="fa fa-user-secret fa-lg"></i> Connect Anonymously
-      </button>
 
-    <hr>
+    <form [formGroup]="userForm"  *ngIf="!newUser"  (ngSubmit)="login()">
+
+      <h3>Existing User Login</h3>
+    
+      <label for="email-login">Email</label>
+      <input type="email" id="email-login" class="input"
+             formControlName="email" required >
+    
+      <div *ngIf="formErrors.email" class="help is-danger">
+        {{ formErrors.email }}
+      </div>
+    
+      <label for="password-login">Password</label>
+      <input type="password" id="password-login" class="input"
+             formControlName="password" required >
+    
+      <div *ngIf="formErrors.password" class="help is-danger">
+        {{ formErrors.password }}
+      </div>
+    
+      <button type="submit" class="button" [disabled]="!userForm.valid"
+      >Submit</button>
+    
+      <span *ngIf="userForm.valid" class="help is-success">Form Looks Valid</span>
+    
+      <a *ngIf="!passReset && userForm.controls.email.valid" class="help is-info" (click)="resetPassword()">Reset Password for {{userForm.value.email}}?</a>
+      <p *ngIf="passReset" class="help is-info">Reset requested. Check your email instructions.</p>
+      <hr>
+      <p class="btn button is-small" (click)="toggleForm()">New User?</p>
+    
+    </form>
+
+
+
+
 
     <register-page></register-page>
 
 </div>
 
-<ng-template #alreadyLoggedIn>
+<!-- <ng-template #alreadyLoggedIn>
   <p class="text-success">
     Already logged in!
   </p>
-</ng-template>
+</ng-template> -->

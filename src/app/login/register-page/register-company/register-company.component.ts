@@ -1,18 +1,20 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 
-import { AuthService } from '../../core/auth.service';
+import {DatabaseService} from '../../../shared/database/database.service';
+import { AuthService } from '../../../core/auth.service';
 
-type UserFields = 'email' | 'password';
+import { Router } from '@angular/router';
+
+type UserFields = 'email' | 'password' | 'company' | 'companyKey';
 type FormErrors = { [u in UserFields]: string };
 
 @Component({
-  selector: 'login-page',
-  templateUrl: './login-page.component.html',
-  styleUrls: ['./login-page.component.css'],
+  selector: 'app-register-company',
+  templateUrl: './register-company.component.html',
+  styleUrls: ['./register-company.component.css']
 })
-export class LoginPageComponent {
+export class RegisterCompanyComponent implements OnInit {
 
   userForm: FormGroup;
   newUser = false; // to toggle login or signup form 
@@ -20,6 +22,8 @@ export class LoginPageComponent {
   formErrors: FormErrors = {
     'email': '',
     'password': '',
+    'company': '',
+    'companyKey': '',
   };
   validationMessages = {
     'email': {
@@ -34,23 +38,37 @@ export class LoginPageComponent {
     },
   };
 
-  constructor(private fb: FormBuilder,
-    public auth: AuthService,
-              private router: Router) { }
+  constructor(private fb: FormBuilder, private auth: AuthService, private router: Router, private db: DatabaseService) { }
 
-  ngOnInit(){
+  ngOnInit() {
     this.buildForm();
   }
 
-  login() {
-    this.auth.emailLogin(this.userForm.value['email'], this.userForm.value['password'])
-    .then(() => this.afterSignIn());
+  toggleForm() {
+    this.newUser = !this.newUser;
   }
 
-  resetPassword() {
-    this.auth.resetPassword(this.userForm.value['email'])
-      .then(() => this.passReset = true);
+  signupCompany() {
+    let _this = this;
+    this.auth.newCompanySignUp(this.userForm.value['email'], this.userForm.value['password'], this.userForm.value['company']).then(function() {
+    _this.db.registerNewCompany(_this.userForm.value['email'], _this.userForm.value['company']);
+  });
+
+    // this.db.registerOwnerWithCompany(this.userForm.value['email']);
   }
+
+  private afterSignIn() {
+    // Do after login stuff here, such router redirects, toast messages, etc.
+    console.log('after sign in..');
+    this.router.navigate(['/schedule']);
+  }
+
+  // private registerNewCompany(user, company) {
+  //   // Do after login stuff here, such router redirects, toast messages, etc.
+  //   console.log('registering user '+user +' with company ' +company);
+  //   console.log('!!!');
+  //   this.db.registerNewCompany(user, company);
+  // }
 
   buildForm() {
     this.userForm = this.fb.group({
@@ -63,17 +81,21 @@ export class LoginPageComponent {
         Validators.minLength(6),
         Validators.maxLength(25),
       ]],
+      'company': ['', [
+        Validators.required,
+      ]],
     });
 
     this.userForm.valueChanges.subscribe((data) => this.onValueChanged(data));
     this.onValueChanged(); // reset validation messages
   }
 
+  // Updates validation state on form changes.
   onValueChanged(data?: any) {
     if (!this.userForm) { return; }
     const form = this.userForm;
     for (const field in this.formErrors) {
-      if (Object.prototype.hasOwnProperty.call(this.formErrors, field) && (field === 'email' || field === 'password')) {
+      if (Object.prototype.hasOwnProperty.call(this.formErrors, field) && (field === 'email' || field === 'password' || field === 'company')) {
         // clear previous error message (if any)
         this.formErrors[field] = '';
         const control = form.get(field);
@@ -90,21 +112,4 @@ export class LoginPageComponent {
       }
     }
   }
-
-
-  /// Social Login
-
-  signInWithGoogle() {
-    this.auth.googleLogin()
-      .then(() => this.afterSignIn());
-  }
-
-
-  /// Shared
-  private afterSignIn() {
-    // Do after login stuff here, such router redirects, toast messages, etc.
-    console.log('after sign in..');
-    this.router.navigate(['/schedule']);
-  }
-
 }

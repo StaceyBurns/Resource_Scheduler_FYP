@@ -16,7 +16,7 @@ type FormErrors = { [u in UserFields]: string };
 export class RegisterPageComponent implements OnInit {
 
   userForm: FormGroup;
-  newUser = false; // to toggle login or signup form
+  newUser = false; // to toggle login or signup form 
   passReset = false; // set to true when password reset is triggered
   formErrors: FormErrors = {
     'email': '',
@@ -47,14 +47,14 @@ export class RegisterPageComponent implements OnInit {
   }
 
   signup() {
-    this.auth.emailSignUp(this.userForm.value['email'], this.userForm.value['password']);
+    this.auth.emailSignUp(this.userForm.value['email'], this.userForm.value['password'], this.userForm.value['company']);
     this.registerUserWithCompany(this.userForm.value['email'], this.userForm.value['company']);
   }
 
-  login() {
-    this.auth.emailLogin(this.userForm.value['email'], this.userForm.value['password'])
-    .then(() => this.afterSignIn());
-  }
+  // login() {
+  //   this.auth.emailLogin(this.userForm.value['email'], this.userForm.value['password'])
+  //   .then(() => this.afterSignIn());
+  // }
 
   private afterSignIn() {
     // Do after login stuff here, such router redirects, toast messages, etc.
@@ -62,17 +62,17 @@ export class RegisterPageComponent implements OnInit {
     this.router.navigate(['/schedule']);
   }
 
-  private registerUserWithCompany(user, company) {
+  private registerUserWithCompany(user, companyKey) {
     // Do after login stuff here, such router redirects, toast messages, etc.
-    console.log('registering user '+user +' with company ' +company);
+    console.log('registering user '+user +' with company ' +companyKey);
     console.log('!!!');
-    this.db.registerCompany(user, company);
+    this.db.registerUserWithCompany(user, companyKey);
   }
 
-  resetPassword() {
-    this.auth.resetPassword(this.userForm.value['email'])
-      .then(() => this.passReset = true);
-  }
+  // resetPassword() {
+  //   this.auth.resetPassword(this.userForm.value['email'])
+  //     .then(() => this.passReset = true);
+  // }
 
   buildForm() {
     this.userForm = this.fb.group({

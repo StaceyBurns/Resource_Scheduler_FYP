@@ -42,6 +42,7 @@ import {ReactiveFormsModule} from "@angular/forms";
 import { NotificationMessageComponent } from './notification-message/notification-message.component';
 import {MatButtonModule, MatCheckboxModule, MatFormFieldModule, MatDatepickerModule, MatNativeDateModule, MatInputModule} from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { RegisterCompanyComponent } from './login/register-page/register-company/register-company.component';
 
 var firebaseConfig = {
   apiKey: "AIzaSyD-mgAQdIx5NYBpWgXyfnV4caztBgS4ylQ",
@@ -74,7 +75,8 @@ var firebaseConfig = {
     UserProfileComponent,
     LoginPageComponent,
     RegisterPageComponent,
-    NotificationMessageComponent
+    NotificationMessageComponent,
+    RegisterCompanyComponent
   ],
   imports: [
     BrowserModule,

@@ -47,28 +47,27 @@ export class AuthService {
   private oAuthLogin(provider: firebase.auth.AuthProvider) {
     return this.afAuth.auth.signInWithPopup(provider)
       .then((credential) => {
-        this.notify.update('Welcome to Firestarter!!!', 'success');
+        this.notify.update('Welcome to Leash!!!', 'success');
+        this.router.navigate(['/schedule']);
         return this.updateUserData(credential.user);
       })
       .catch((error) => this.handleError(error) );
   }
 
-  //// Anonymous Auth ////
-  anonymousLogin() {
-    return this.afAuth.auth.signInAnonymously()
-      .then((user) => {
-        this.notify.update('Welcome to Leash!', 'success');
-        return this.updateUserData(user); // if using firestore
-      })
-      .catch((error) => {
-        console.error(error.code);
-        console.error(error.message);
-        this.handleError(error);
-      });
-  }
 
   //// Email/Password Auth ////
-  emailSignUp(email: string, password: string) {
+  emailSignUp(email: string, password: string, companyKey:string) {
+    return this.afAuth.auth.createUserWithEmailAndPassword(email, password)
+      .then((user) => {
+        this.notify.update('Welcome to Leash!', 'success');
+        this.router.navigate(['/schedule']);
+        this.db.registerUserWithCompany(email, companyKey);
+        return this.updateUserData(user); // if using firestore
+      })
+      .catch((error) => this.handleError(error) );
+  }
+
+  newCompanySignUp(email: string, password: string, companyKey:string) {
     return this.afAuth.auth.createUserWithEmailAndPassword(email, password)
       .then((user) => {
         this.notify.update('Welcome to Leash!', 'success');
@@ -81,6 +80,8 @@ export class AuthService {
     return this.afAuth.auth.signInWithEmailAndPassword(email, password)
       .then((user) => {
         this.notify.update('Welcome to Leash!', 'success')
+        this.router.navigate(['/schedule']);
+        this.db.getUserOnSignIn(email);
         return this.updateUserData(user); // if using firestore
       })
       .catch((error) => this.handleError(error) );
