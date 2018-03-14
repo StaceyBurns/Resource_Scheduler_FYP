@@ -43,6 +43,10 @@ import { NotificationMessageComponent } from './notification-message/notificatio
 import {MatButtonModule, MatCheckboxModule, MatFormFieldModule, MatDatepickerModule, MatNativeDateModule, MatInputModule} from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { RegisterCompanyComponent } from './login/register-page/register-company/register-company.component';
+import { GroupsComponent } from './groups/groups.component';
+import { GroupAddComponent } from './groups/group-add/group-add.component';
+import { GroupEditComponent } from './groups/group-edit/group-edit.component';
+import { GroupDetailComponent } from './groups/group-detail/group-detail.component';
 
 var firebaseConfig = {
   apiKey: "AIzaSyD-mgAQdIx5NYBpWgXyfnV4caztBgS4ylQ",
@@ -76,7 +80,11 @@ var firebaseConfig = {
     LoginPageComponent,
     RegisterPageComponent,
     NotificationMessageComponent,
-    RegisterCompanyComponent
+    RegisterCompanyComponent,
+    GroupsComponent,
+    GroupAddComponent,
+    GroupEditComponent,
+    GroupDetailComponent
   ],
   imports: [
     BrowserModule,

@@ -68,6 +68,11 @@ export class DatabaseService implements OnInit {
                   _this.loadedUser = doc.data();
                   console.log('loadedUser')
                   console.log(_this.loadedUser)
+                  console.log(_this.loadedUser['email'])
+                  _this.loadedCompany =_this.loadedUser['company'];
+                //   var value = _this.loadedUser[Object.keys(_this.loadedUser)[0]];
+                //   console.log(value);
+                _this.onSignIn();
               });
           });
 
@@ -86,6 +91,7 @@ export class DatabaseService implements OnInit {
                   });
               });
               console.log('gonna add key ' + companyKey + ' to the user ' + user);
+              _this.loadedCompany = companyKey;
               _this.onSignIn();
           })
           .catch(function(error) {

@@ -79,10 +79,10 @@ export class AuthService {
   emailLogin(email: string, password: string) {
     return this.afAuth.auth.signInWithEmailAndPassword(email, password)
       .then((user) => {
+        this.db.getUserOnSignIn(email);
         this.notify.update('Welcome to Leash!', 'success')
         this.router.navigate(['/schedule']);
-        this.db.getUserOnSignIn(email);
-        return this.updateUserData(user); // if using firestore
+        // return this.updateUserData(user); // if using firestore
       })
       .catch((error) => this.handleError(error) );
   }
