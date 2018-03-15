@@ -1,3 +1,26 @@
-<p>
-  group-edit works!
-</p>
+<h1>{{ ( group | async)?.name }}</h1>
+<h3>Notes</h3>
+<p>{{ ( group | async)?.note }}</p>   
+
+<hr><hr><hr><hr><hr>
+<div class="container">
+  <h1>Hero Form</h1>
+  <form>
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input type="text" class="form-control" #name id="name" required 
+      [value]="(group | async)?.name"
+      >
+    </div>
+
+    <div class="form-group">
+      <label for="notes">Alter Ego</label>
+      <input type="text" class="form-control" #note id="notes"
+      [value]="(group | async)?.note"
+      >
+    </div>
+
+    <button type="submit" class="btn btn-success" (click)="saveEdit(name.value, note.value)">Submit</button>
+
+  </form>
+</div>

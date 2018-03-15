@@ -14,8 +14,8 @@
       
 
     <ul class="list-group text-muted" *ngIf="loadedDisplay==='resources'">
-      <li class="text list-group-item schedule-list-resource" *ngFor="let dbResource of dbResources | async">
-       <h4> {{dbResource.name}} </h4>
+      <li class="text list-group-item schedule-list-resource" *ngFor="let resource of resources | async">
+       <h4> {{resource.data.name}} </h4>
       </li>
     </ul>
     <ul *ngIf="loadedDisplay==='projects'">
@@ -42,7 +42,7 @@
               <input type="date" name="date" #date><br>
               Resource<br>
               <select #resource>
-                  <option name="resource" *ngFor="let dbResource of dbResources | async" [value]="dbResource.name">{{dbResource.name}}</option>
+                  <option name="resource" *ngFor="let resource of resources | async" [value]="resource.data.name">{{resource.data.name}}</option>
               </select>
               <input type="submit" (click)="takeForm(date.value, resource.value)" 
 

@@ -1,4 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input} from '@angular/core';
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
+import {DatabaseService} from '../shared/database/database.service';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/map';
+import {Group} from '../shared/interfaces/interfaces';
+import {GroupId} from '../shared/interfaces/interfaces';
 
 @Component({
   selector: 'app-groups',
@@ -7,9 +13,26 @@ import { Component, OnInit } from '@angular/core';
 })
 export class GroupsComponent implements OnInit {
 
-  constructor() { }
+  constructor(private db: DatabaseService) { }
 
   ngOnInit() {
+    this.db.onSignIn(); // prevents company reset on page reset
+    this.groups = this.db.groups;
+    this.group = this.db.groups;
+  }
+  groups: any;
+  group: Observable<Group>;
+
+  getGroup(groupId){
+    this.db.getGroup(groupId);
+    this.group = this.db.group;
+  }
+  deleteGroup(groupId){
+    this.db.deleteGroup(groupId);
+  }
+  addGroup(name, note){
+    this.db.addGroup(name, note);
+
   }
 
 }

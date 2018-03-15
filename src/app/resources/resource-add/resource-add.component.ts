@@ -4,6 +4,8 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import {Resource} from '../../shared/interfaces/interfaces';
 import {ResourceId} from '../../shared/interfaces/interfaces';
+import {Group} from '../../shared/interfaces/interfaces';
+import {GroupId} from '../../shared/interfaces/interfaces';
 
 @Component({
   selector: 'app-resource-add',
@@ -19,19 +21,24 @@ export class ResourceAddComponent implements OnInit {
     this.db.ngOnInit();
     this.resources = this.db.resources;
     this.resource = this.db.resource;
+    this.groups = this.db.groups;
+    this.group = this.db.group;
   }
   resources: any;
   resource: Observable<Resource>;
+  groups: any;
+  group: Observable<Resource>;
 
-  getPost(resourceId){
-    this.db.getPost(resourceId);
+  getResource(resourceId){
+    this.db.getResource(resourceId);
     this.resource = this.db.resource;
   }
-  deletePost(resourceId){
-    this.db.deletePost(resourceId);
+  deleteResource(resourceId){
+    this.db.deleteResource(resourceId);
   }
-  addPost(name, note){
-    this.db.addPost(name, note);
+  addResource(name, note, group){
+    this.db.addResource(name, note);
+    console.log('Adding resource '+name +' to group ' +group);
 
   }
 

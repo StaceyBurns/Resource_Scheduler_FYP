@@ -3,7 +3,9 @@ import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/fires
 import { Observable } from 'rxjs/Observable';
 import {DatabaseService} from '../shared/database/database.service';
 import {CalendarOverviewComponent} from '../calendar/calendar-overview/calendar-overview.component';
-
+import {Resource} from '../shared/interfaces/interfaces';
+import {ResourceId} from '../shared/interfaces/interfaces';
+import 'rxjs/add/operator/map';
 
 
 
@@ -17,15 +19,21 @@ export class ScheduleComponent implements OnInit {
 
 
   ngOnInit() {
-    this.getdaydata();
+    this.db.onSignIn(); // prevents company reset on page reset
+    this.resources = this.db.resources;
+    this.resource = this.db.resource;
+    this.db.getdaydata()
   }
   loadedDisplay = 'resources';
 
   dbResources: Observable<any[]>;
   constructor(af:AngularFirestore, private db: DatabaseService, private calendar:CalendarOverviewComponent) {
     // console.log(af);
-    this.dbResources = af.collection('resource').valueChanges();
+
 }
+
+resources: any;
+resource: Observable<Resource>;
 
 takeForm(date:Date, resource:string){
 let _this = this;

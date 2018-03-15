@@ -20,23 +20,22 @@ export class ResourcesComponent implements OnInit {
   }
 
   ngOnInit(){
-    this.db.ngOnInit();
+    this.db.onSignIn(); // prevents company reset on page reset
     this.resources = this.db.resources;
     this.resource = this.db.resource;
   }
   resources: any;
   resource: Observable<Resource>;
 
-  getPost(resourceId){
-    this.db.getPost(resourceId);
-    //this.resource = this.db.resourceDoc.valueChanges(); //updates resource info when resource is clicked, necessary because this isn't fed back from getPost() in db service
+  getResource(resourceId){
+    this.db.getResource(resourceId);
     this.resource = this.db.resource;
   }
-  deletePost(resourceId){
-    this.db.deletePost(resourceId);
+  deleteResource(resourceId){
+    this.db.deleteResource(resourceId);
   }
-  addPost(name, note){
-    this.db.addPost(name, note);
+  addResource(name, note){
+    this.db.addResource(name, note);
 
   }
 }

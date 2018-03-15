@@ -26,7 +26,7 @@ export class CalendarComponent implements OnInit {
     this.updateDate();
     this.getMonthLength();
     this.getDays();
-    this.db.ngOnInit();
+    this.db.onSignIn();
     this.resources = this.db.resources;
     this.resource = this.db.resource;
 

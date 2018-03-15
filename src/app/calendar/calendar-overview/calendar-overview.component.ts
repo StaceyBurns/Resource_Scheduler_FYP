@@ -39,10 +39,12 @@ export class CalendarOverviewComponent{
 
 
   ngOnInit(){
-    this.db.ngOnInit();
+    this.db.calResources = [];
+    this.db.onSignIn();
     var _this = this;
     this.db.getData(this.db.calResources).then(function() {
     _this.setResources();
+    console.log('()()()()()()---Calendar initialized----()()()()()')
     });
 
     this.calendarOptions = {
@@ -113,6 +115,7 @@ export class CalendarOverviewComponent{
  })
     this.calResources = this.db.calResources;
     console.log('fetching');
+    this.db.onSignIn();
  
     console.log('load cal status..........' + this.loadCalendar)
     this.calendarOptions = {

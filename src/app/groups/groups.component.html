@@ -1,3 +1,35 @@
 <p>
   groups works!
 </p>
+
+
+<div class="row">
+  <div class="col-sm-4 bg-primary text-white full-height">
+    <br>
+      <button class="btn btn-success" (click) ="activeItem = 'addGroup'">New Group</button>
+      <br> <br> <br>
+      <ul class="list-group">
+          <li class="list-group-item text-muted" *ngFor = "let group of groups | async" (click) = "getGroup(group.id) ; activeItem= group.data.name ; editMode = false" [ngClass]="{active: activeItem ===  group.data.name}" >
+            <strong>{{group.data.name}} (<button (click)="deleteGroup(group.id)" class="text-danger">Delete</button>)</strong>
+            <br>
+            {{group.data.note}}
+          </li>
+      </ul>
+  </div>
+  
+  <div *ngIf="activeItem !='addGroup' ; else showAddGroup" class="col-sm-8 bg-info text-white full-height">
+      <div *ngIf="editMode !=true ; else showEditGroup" class="col-sm-8 bg-info text-white full-height">
+          <app-group-detail [group]='group'></app-group-detail>
+          <br>
+          <button class="btn btn-info" (click)="editMode = true">Edit</button>
+  </div>
+  <ng-template #showEditGroup > 
+      <app-group-edit [group]='group'></app-group-edit>
+  </ng-template>
+
+  </div>
+      
+    <ng-template #showAddGroup > 
+        <app-group-add></app-group-add>
+    </ng-template>
+  </div>
