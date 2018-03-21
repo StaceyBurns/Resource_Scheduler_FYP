@@ -55,7 +55,7 @@ export class CalendarOverviewComponent{
         center: 'title',
         right: 'month,agendaWeek,agendaDay,listMonth'
       },
-      events: []
+      events: this.calResources
     };
     this.resources = this.db.resources;
     this.resource = this.db.resource;
@@ -85,22 +85,19 @@ export class CalendarOverviewComponent{
   
   refreshCalendar(){
     let _this = this;
-    this.db.calResources =[];
-    this.db.getData(this.db.calResources).then(function() {    
-      _this.refetch();
+    this.db.calResources =[]; //reset calResources array to empty
+    this.db.getData(this.db.calResources).then(function() { //grab the updated data from DB
+      _this.refetch(); //then call refetch to set company and calendar options
+    }).then(function() {    //hide and reshow the calendar to trigger a refresh
+      let l = document.getElementById('fetchButton');
+      l.click();
+      setTimeout(function(){
+        let l = document.getElementById('fetchButton');
+        l.click();
+      }, 1); 
     });
     
-    let l = document.getElementById('fetchButton');
-    
-    l.click();
 
-
-    setTimeout(function(){
-
-      let l = document.getElementById('fetchButton');
-    
-      l.click();
-    }, 1); 
 
     
   }

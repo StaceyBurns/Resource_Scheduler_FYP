@@ -8,22 +8,27 @@
           <input type="radio" name="resources" id="resources" (click) ="loadedDisplay='resources'"> Resources
         </label>
         <label class="btn btn-primary">
-          <input type="radio" name="projects" id="projects" (click) ="loadedDisplay='projects'"> Projects
+          <input type="radio" name="groups" id="groups" (click) ="loadedDisplay='groups'"> Groups
         </label>
       </div>
       
-
+<!-- --------------------------------------------resource view------------------------------------------------ -->
     <ul class="list-group text-muted" *ngIf="loadedDisplay==='resources'">
       <li class="text list-group-item schedule-list-resource" *ngFor="let resource of resources | async">
-       <h4> {{resource.data.name}} </h4>
+       <h4> {{resource.data.title}} </h4>
       </li>
     </ul>
-    <ul *ngIf="loadedDisplay==='projects'">
-        <h1>Show project list</h1>
-        <li class="text" *ngFor="let dbProject of dbProjectss | async">
-          {{dbProject.name}}
-        </li>
-      </ul>
+
+<!-- --------------------------------------------group view------------------------------------------------ -->
+    <div *ngIf="loadedDisplay==='groups'">
+      <div  *ngFor="let resource of resources">
+              {{resource.data.title}}
+              {{ resource.data.title }}
+      </div> 
+    </div>      
+
+
+<!-- --------------------------------------------full view------------------------------------------------ -->
       <div *ngIf="loadedDisplay==='overview'">
         <h1>Show the full view!</h1>
           <h2>Add directly to the schedule here!</h2>
@@ -42,9 +47,9 @@
               <input type="date" name="date" #date><br>
               Resource<br>
               <select #resource>
-                  <option name="resource" *ngFor="let resource of resources | async" [value]="resource.data.name">{{resource.data.name}}</option>
+                  <option name="resource" *ngFor="let resource of resources | async" [id]="resource.data.title" [value]="resource.data.title">{{resource.data.title}}</option>
               </select>
-              <input type="submit" (click)="takeForm(date.value, resource.value)" 
+              <input type="submit" (click)="takeForm(resource.value, date.value,  id)" 
 
               >
             </form>

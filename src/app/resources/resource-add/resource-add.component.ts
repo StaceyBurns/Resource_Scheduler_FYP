@@ -27,7 +27,7 @@ export class ResourceAddComponent implements OnInit {
   resources: any;
   resource: Observable<Resource>;
   groups: any;
-  group: Observable<Resource>;
+  group: Observable<Group>;
 
   getResource(resourceId){
     this.db.getResource(resourceId);

@@ -1,5 +1,5 @@
 export class Resource {
-    name: string;
+    title: string;
     note: string;
   }
 

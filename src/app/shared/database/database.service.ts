@@ -7,7 +7,6 @@ import {ResourceId} from '../interfaces/interfaces';
 import {Group} from '../interfaces/interfaces';
 import {GroupId} from '../interfaces/interfaces';
 import {Router} from '@angular/router';
-// import { resource } from 'selenium-webdriver/http';
 
 @Injectable()
 export class DatabaseService implements OnInit {
@@ -26,11 +25,16 @@ export class DatabaseService implements OnInit {
   group: Observable < Group > ;
   selectedGroup: string;
 
+  filteredGroup: any;
+  filteredGroupItem: Observable <Group>;
+
   calResources: any;
 
 
   loadedCompany: string;
   loadedUser: any;
+  loadedScheduleDates = [];
+  loadedResourceDates: any;
   constructor(private router: Router, private afs: AngularFirestore) {
 
   }
@@ -40,16 +44,12 @@ export class DatabaseService implements OnInit {
 //----------------------------------------------------------------------------------
 
   ngOnInit() {
-
-    // this.calResources = [];
     this.onSignIn(); // prevents company reset on page reset
   }
 
   onSignIn() {
       console.log('on sign in loaded company ' + this.loadedCompany);
       this.loadedCompany = localStorage.getItem('loadedCompany');
-    //   this.calResources = [];
-
       //--------------------------------set resources------------------------------------
       this.resourcesCol = this.afs.collection('companies/').doc(this.loadedCompany).collection('resources');
       this.resources = this.resourcesCol.snapshotChanges()
@@ -76,7 +76,6 @@ export class DatabaseService implements OnInit {
                       };
                   })
               })
-        //   this.router.navigate(['/schedule']);
   }
 
   getUserOnSignIn(email ? : string) {
@@ -89,8 +88,6 @@ export class DatabaseService implements OnInit {
                   console.log(_this.loadedUser)
                   console.log(_this.loadedUser['email'])
                   _this.loadedCompany =_this.loadedUser['company'];
-                //   var value = _this.loadedUser[Object.keys(_this.loadedUser)[0]];
-                //   console.log(value);
                 localStorage.setItem('loadedCompany', _this.loadedUser['company']);
                 _this.onSignIn();
               });
@@ -181,7 +178,7 @@ export class DatabaseService implements OnInit {
 
   getData(calResources) {
 
-      return this.afs.collection("schedule").ref.get().then(function(querySnapshot) {
+      return this.afs.collection('companies/').doc(this.loadedCompany).collection("schedule").ref.get().then(function(querySnapshot) {
           querySnapshot.forEach(function(doc) {
               // doc.data() is never undefined for query doc snapshots
               calResources.push(doc.data());
@@ -206,25 +203,64 @@ export class DatabaseService implements OnInit {
 //-----------------------Schedule events--------------------------------------------
 //----------------------------------------------------------------------------------
 
-  testAddDate(date, resource) {
-    this.afs.collection('schedule').add({
+    getScheduledDates(resource, date) {
+        let _this = this;
+        this.loadedResourceDates = [];
+        return this.afs.collection("companies").doc(this.loadedCompany).collection('resources').ref.where('title', '==', resource).get().then(function(querySnapshot)
+            {
+                querySnapshot.forEach(function(doc) {
+                    let data = doc.data();
+                    console.log(' get schedule dates function');
+                    for(let i=0; i<data['start'].length; i++){
+                    _this.loadedResourceDates.push(data['start'][i]);
+                    }
+                    console.log('loaded schedule dates after push')
+                    console.log(_this.loadedResourceDates)
+                    console.log('loaded resource')
+                    console.log('from getscheduledates - delete cal date '+ resource+ ' resource '+ date)
+                });
+            });            
+    }
+
+  testAddDate(resource, date) {
+    console.log(this.loadedResourceDates);
+    this.loadedResourceDates.push(date);
+    console.log('dates array after new date pushed');
+    console.log(this.loadedResourceDates);
+    let collectionRef = this.afs.collection('companies/').doc(this.loadedCompany).collection('resources');
+    collectionRef.ref.where("title", "==", resource)
+        .get()
+        .then(querySnapshot => {
+            querySnapshot.forEach((doc) => {
+                doc.ref.update({
+                    start: this.loadedResourceDates
+                })
+            })
+        })
+
+
+    return this.afs.collection('companies/').doc(this.loadedCompany).collection('schedule').add({
         start: date,
         title: resource
     }).then(function() {
         console.log('schedule item added')
     });
 
-    return this.afs.collection('companies/').doc(this.loadedCompany).collection('resources').add({
-        title: "straight from db",
-        start: date,
-        resource: resource
-    });
+    //-----------Add something like this if the resource is new
+
+    // return this.afs.collection('companies/').doc(this.loadedCompany).collection('resources').add({
+    //     title: "straight from db",
+    //     start: date,
+    //     resource: resource
+    // });
 
 }
 
   // delete field data for match
+  //check if array needs to be processed backwards
   deleteCalEvent(dateID, resourceTitle) {
-      let collectionRef = this.afs.collection('schedule');
+      console.log('from delete calevent delete cal date '+ dateID + ' resource '+ resourceTitle)
+      let collectionRef = this.afs.collection('companies/').doc(this.loadedCompany).collection('schedule');
       collectionRef.ref.where("title", "==", resourceTitle).where("start", "==", dateID)
           .get()
           .then(querySnapshot => {
@@ -242,6 +278,27 @@ export class DatabaseService implements OnInit {
           .catch(function(error) {
               console.log("Error getting documents: ", error);
           });
+          let _this = this;
+          this.getScheduledDates(resourceTitle, dateID).then(function(){
+            for (var i=_this.loadedResourceDates.length-1; i>=0; i--) {
+                if (_this.loadedResourceDates[i] === dateID) {
+                    console.log('Found match to delete!');
+                    _this.loadedResourceDates.splice(i, 1);
+                }
+            }
+        }).then(function(){
+            console.log('right before delete happens '+ _this.loadedResourceDates)
+            let resCollectionRef = _this.afs.collection('companies/').doc(_this.loadedCompany).collection('resources');
+            resCollectionRef.ref.where("title", "==", resourceTitle)
+            .get()
+            .then(querySnapshot => {
+                querySnapshot.forEach((doc) => {
+                    doc.ref.update({
+                        start: _this.loadedResourceDates
+                    })
+                })
+            });
+        })
   }
 
 //----------------------------------------------------------------------------------
@@ -251,8 +308,9 @@ export class DatabaseService implements OnInit {
   addResource(name, note) {
       var idName = "my-custom-id";
       this.afs.collection('companies/').doc(this.loadedCompany).collection('resources').add({
-          name: name,
-          note: note
+          title: name,
+          note: note,
+          start: []
       });
   }
 
@@ -268,7 +326,7 @@ export class DatabaseService implements OnInit {
 
   editResource(name, note) {
       this.afs.collection('companies/').doc(this.loadedCompany).collection('resources/').doc(this.selectedResource).update({
-          name: name,
+          title: name,
           note: note
       });
   }
@@ -301,5 +359,27 @@ editGroup(name, note) {
         note: note
     });
 }
+
+//----------------------------------------------------------------------------------
+//-----------------------Filtering events--------------------------------------------
+//----------------------------------------------------------------------------------
+
+
+filterByGrouup(group:any){
+    return Observable.create((observer: any) => {
+        this.filteredGroup =[];
+       
+        this.afs.collection('companies/').doc(this.loadedCompany).collection('resources')
+            .ref.where('group', '==', group)
+            .get()
+            .then(function(querySnapshot) {
+                querySnapshot.forEach(function(doc) {
+                    console.log(doc.id, " => ", doc.data());
+                    this.filteredGroup.push(doc.data);
+                });
+            })
+    });
+}
+
 
 }

@@ -31,12 +31,13 @@
 
       <tr class="list-group-item text-muted" *ngFor = "let resource of resources | async">  
         <!-- <th> Empty..</th> -->
-        <td class="calendar-row calendar-resource-head">{{resource.data.name}}</td>
+        <td class="calendar-row calendar-resource-head">{{resource.data.title}}</td>
         
         <td class="calendar-row" id="{{day.dateID}}"  *ngFor="let day of daysInMonth">
           <!-- <p>{{resource.data?.start}}</p> -->
           <!-- <P>{{day.dateID}}</P> -->
-          <p *ngIf="day.dateID==resource.data.start">MATCH!!</p>
+          <p *ngIf="resource.data.start.includes(day.dateID)">MATCH!!</p>
+          <!-- <p>{{resource.data.start}}</p> -->
           <button (click)="editCalEvent(day.dateID, resource.data.title)"></button>
           </td>
   

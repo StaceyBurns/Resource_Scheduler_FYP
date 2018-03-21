@@ -5,6 +5,8 @@ import {DatabaseService} from '../shared/database/database.service';
 
 let now = moment().format('LLLL');
 
+
+
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
@@ -137,12 +139,17 @@ editCalEvent(dateID, resourceTitle){
   console.log('day ' + dateID + ' clicked for '+ resourceTitle);
   this.calSelectedDate = dateID;
   this.calSelectedResource = resourceTitle;
-  this.deleteCalEvent(dateID, resourceTitle)
+  this.deleteCalEvent(dateID, resourceTitle);
 }
 
 deleteCalEvent(dateID, resourceTitle){
   this.db.deleteCalEvent(dateID, resourceTitle);
+  console.log('delete event');
 }
+
+
+
+
 
 
 

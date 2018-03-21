@@ -5,8 +5,8 @@
       <button class="btn btn-success" (click) ="activeItem = 'addResource'">New Resource</button>
       <br> <br> <br>
       <ul class="list-group">
-          <li class="list-group-item text-muted" *ngFor = "let resource of resources | async" (click) = "getResource(resource.id) ; activeItem= resource.data.name ; editMode = false" [ngClass]="{active: activeItem ===  resource.data.name}" >
-            <strong>{{resource.data.name}} (<button (click)="deleteResource(resource.id)" class="text-danger">Delete</button>)</strong>
+          <li class="list-group-item text-muted" *ngFor = "let resource of resources | async" (click) = "getResource(resource.id) ; activeItem= resource.data.title ; editMode = false" [ngClass]="{active: activeItem ===  resource.data.title}" >
+            <strong>{{resource.data.title}} (<button (click)="deleteResource(resource.id)" class="text-danger">Delete</button>)</strong>
             <br>
             {{resource.data.note}}
           </li>
