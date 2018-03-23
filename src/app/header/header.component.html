@@ -1,26 +1,38 @@
-<nav class="navbar navbar-default">
-    <div class="container-fluid">
-      <div class="navbar-header">
-        <a href="#" class="navbar-brand">Demo</a>
-      </div>
+<div class="container-fluid">
+<div class="row">
+        <nav class="navbar navbar-default align-text-bottom col-sm-12" style="background-color: #515151;">
+                <div class="navbar-header">
+                    <!-- <a href="#" class="navbar-left"><img src="../../../assets/images/leash_logo_dark.png" height="100" width="350"></a>
+        <a href="#" class="navbar-brand">Demo</a> -->
+
+                    <a class="navbar-brand" href="#">
+            <img src="../../../assets/images/leash_logo_dark_nav2.png" width="300" height="100" alt="">
+          </a>
+                </div>
+
+
+
+                <ul class="nav navbar-nav align-text-bottom">
+                    <li><a routerLink="schedule" routerLinkActive="nav-active">Schedule</a></li>
+                    <li><a routerLink="resources" routerLinkActive="nav-active">Resources</a></li>
+                    <li><a routerLink="projects" routerLinkActive="nav-active">Projects</a></li>
+                    <li><a routerLink="groups" routerLinkActive="nav-active">Groups</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown" appDropdown>
+                        <button class="dropdown-toggle dropbtn" role="button">Account <span class="caret"></span></button>
+                        <ul class="dropdown-menu">
+                            <li><a routerLink="user-profile">My Account</a></li>
+                            <li><a href="" (click)='logout()'>Sign Out</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <!-- <button (click)='logout()'>Sign Out</button> -->
+        </nav>
+
+</div>
+</div>
+
+
   
-      <div class="navbar-default">
-        <ul class="nav navbar-nav">
-          <li><a routerLink="schedule">Schedule</a></li>
-          <li><a routerLink="resources">Resources</a></li>
-          <li><a routerLink="projects">Projects</a></li>
-          <li><a routerLink="groups">Groups</a></li>
-        </ul>
-        <ul class="nav navbar-nav navbar-right">
-          <li class="dropdown" appDropdown>
-            <button class="dropdown-toggle" role="button">Account <span class="caret"></span></button>
-            <ul class="dropdown-menu">
-              <li><a routerLink="user-profile">My Account</a></li>
-              <li><a href="" (click)='logout()'>Sign Out</a></li>
-            </ul>
-          </li>
-        </ul>
-        <button (click)='logout()'>Sign Out</button>
-      </div>
-    </div>
-  </nav>
+

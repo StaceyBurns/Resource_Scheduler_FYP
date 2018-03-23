@@ -12,7 +12,7 @@ import {Router} from '@angular/router';
 export class DatabaseService implements OnInit {
 
   resourcesCol: AngularFirestoreCollection < Resource > ;
-  resources: any;
+  resources: Observable<any>;
 
   resourceDoc: AngularFirestoreDocument < Resource > ;
   resource: Observable < Resource > ;
@@ -305,11 +305,13 @@ export class DatabaseService implements OnInit {
 //-----------------------Resource events--------------------------------------------
 //----------------------------------------------------------------------------------
 
-  addResource(name, note) {
+  addResource(name, note, group, schedulingDepend) {
       var idName = "my-custom-id";
       this.afs.collection('companies/').doc(this.loadedCompany).collection('resources').add({
           title: name,
           note: note,
+          group: group,
+          schedulingDependency: schedulingDepend,
           start: []
       });
   }
@@ -324,10 +326,12 @@ export class DatabaseService implements OnInit {
       this.afs.collection('companies/').doc(this.loadedCompany).collection('resources').doc(resourceId).delete();
   }
 
-  editResource(name, note) {
+  editResource(name, note, group, schedulingDepend) {
       this.afs.collection('companies/').doc(this.loadedCompany).collection('resources/').doc(this.selectedResource).update({
           title: name,
-          note: note
+          note: note,
+          group: group,
+          schedulingDependency: schedulingDepend
       });
   }
 
@@ -366,20 +370,26 @@ editGroup(name, note) {
 
 
 filterByGrouup(group:any){
-    return Observable.create((observer: any) => {
-        this.filteredGroup =[];
-       
-        this.afs.collection('companies/').doc(this.loadedCompany).collection('resources')
-            .ref.where('group', '==', group)
-            .get()
-            .then(function(querySnapshot) {
-                querySnapshot.forEach(function(doc) {
-                    console.log(doc.id, " => ", doc.data());
-                    this.filteredGroup.push(doc.data);
-                });
-            })
+    // this.resourcesCol = this.afs.collection('companies/').doc(this.loadedCompany).collection('resources'), ref =>{
+    //     return ref.where ('group', '==', group);
+    // })
+    // this.resources = this.resourcesCol.valueChanges();
+    // console.log('FILTER function running woth argument ' + group)
+
+    this.resourcesCol = this.afs.collection('companies/').doc(this.loadedCompany).collection('resources', ref =>{
+            return ref.where("group", "==", group);
+    })
+    this.resources = this.resourcesCol.valueChanges();
+    console.log('FILTER function running woth argument ' + group)
+    console.log(this.resources);
+    this.resources.forEach(item => {
+        console.log('Item:', item);
     });
+
+
+
 }
+
 
 
 }

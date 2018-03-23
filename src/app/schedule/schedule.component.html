@@ -21,9 +21,19 @@
 
 <!-- --------------------------------------------group view------------------------------------------------ -->
     <div *ngIf="loadedDisplay==='groups'">
-      <div  *ngFor="let resource of resources">
-              {{resource.data.title}}
-              {{ resource.data.title }}
+        <form>
+            Filter by group
+            <br>
+            <select #theGroup name="selectGroup">
+                <option name="theGroup" *ngFor="let group of groups | async" [id]="group.data.name" [value]="group.data.name">{{group.data.name}}</option>
+            </select>
+            <input type="submit" value="Go!" (click)="filterByGroup(theGroup.value)">
+          </form>
+
+
+
+      <div  *ngFor="let resource of resources  | async">
+              <p *ngIf="resource.data.group == selectedGroup">{{resource.data.title}}</p>
       </div> 
     </div>      
 

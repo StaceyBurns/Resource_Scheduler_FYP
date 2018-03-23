@@ -1,62 +1,34 @@
-<!-- <div class="row"> 
-    <div class="col-xs-12">
-      <form>
-        <div class="row">
-          <div class="col-sm-5 form-group">
-            <label for="name">Name</label>
-            <p>{{ ( resource | async)?.name }}</p> 
-            <input 
-            type="text" 
-            id="name" 
-            name="name"
-            class="form-control"
-
-          >
-          </div>
-          <div class="col-sm-2 form-group">
-            <label for="notes">Notes</label>
-            <p>{{ ( resource | async)?.note }}</p>
-            <input 
-            type="text" 
-            id="notes" 
-            class="form-control"
-           
-            > 
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-xs-12">
-            <button class="btn btn-success" type="submit">Save</button>
-            <button class="btn btn-danger" type="button">Delete</button>
-          </div>
-        </div>
-      </form>
-    </div>
-  </div>-->
-
-  <h1>{{ ( resource | async)?.name }}</h1>
-  <h3>Notes</h3>
-  <p>{{ ( resource | async)?.note }}</p>   
-
-  <hr><hr><hr><hr><hr>
-  <div class="container">
-    <h1>Hero Form</h1>
+<div class="container">
+ <h1>{{ ( resource | async)?.title }}</h1>
     <form>
       <div class="form-group">
         <label for="name">Name</label>
         <input type="text" class="form-control" #name id="name" required 
-        [value]="(resource | async)?.name"
+        [value]="(resource | async)?.title"
         >
       </div>
 
       <div class="form-group">
         <label for="notes">Alter Ego</label>
         <input type="text" class="form-control" #note id="notes"
-        [value]="(resource | async)?.note"
-        >
+        [value]="(resource | async)?.note">
       </div>
 
-      <button type="submit" class="btn btn-success" (click)="saveEdit(name.value, note.value)">Submit</button>
+      <div class="form-group">
+          <label for="group">Group</label>
+      <select #group>
+        <option name="group" *ngFor="let group of groups | async" [value]="group.data.name">{{group.data.name}}</option>
+      </select>
+      </div>
+
+      <div class="form-group">
+          <label for="group">Scheduling dependency - Only allow resources from a specific group to be scheduled to this resource</label>
+      <select #schedulingDepend>
+        <option name="schedulingDepend" *ngFor="let group of groups | async" [value]="group.data.name">{{group.data.name}}</option>
+      </select>
+      </div>
+
+      <button type="submit" class="btn btn-success" (click)="saveEdit(name.value, note.value, group.value, schedulingDepend.value)">Submit</button>
 
     </form>
 </div>

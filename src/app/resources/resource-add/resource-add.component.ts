@@ -36,10 +36,9 @@ export class ResourceAddComponent implements OnInit {
   deleteResource(resourceId){
     this.db.deleteResource(resourceId);
   }
-  addResource(name, note, group){
-    this.db.addResource(name, note);
+  addResource(name, note, group, schedulingDepend){
+    this.db.addResource(name, note, group, schedulingDepend);
     console.log('Adding resource '+name +' to group ' +group);
-
   }
 
 
