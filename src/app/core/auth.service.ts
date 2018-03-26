@@ -9,6 +9,7 @@ import {DatabaseService} from '../shared/database/database.service';
 
 import { Observable } from 'rxjs/Observable';
 import { switchMap } from 'rxjs/operators';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 interface User {
   uid: string;
@@ -21,7 +22,7 @@ interface User {
 export class AuthService {
 
   user: Observable<User | null>;
-
+  
   constructor(private afAuth: AngularFireAuth,
               private afs: AngularFirestore,
               private router: Router,
@@ -71,6 +72,7 @@ export class AuthService {
     return this.afAuth.auth.createUserWithEmailAndPassword(email, password)
       .then((user) => {
         this.notify.update('Welcome to Leash!', 'success');
+        this.router.navigate(['/schedule']); //changed
         return this.updateUserData(user); // if using firestore
       })
       .catch((error) => this.handleError(error) );
@@ -99,7 +101,7 @@ export class AuthService {
   signOut() {
     this.afAuth.auth.signOut().then(() => {
         this.router.navigate(['/login']);
-        this.db.loadedCompany = '';
+        this.db.loadedCompany = null;
     });
   }
 

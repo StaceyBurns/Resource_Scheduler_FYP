@@ -25,6 +25,7 @@
             Filter by group
             <br>
             <select #theGroup name="selectGroup">
+                <option name="schedulingDepend" value="noDependencySelected">-</option>
                 <option name="theGroup" *ngFor="let group of groups | async" [id]="group.data.name" [value]="group.data.name">{{group.data.name}}</option>
             </select>
             <input type="submit" value="Go!" (click)="filterByGroup(theGroup.value)">
@@ -34,6 +35,7 @@
 
       <div  *ngFor="let resource of resources  | async">
               <p *ngIf="resource.data.group == selectedGroup">{{resource.data.title}}</p>
+              <p *ngIf="selectedGroup == 'noDependencySelected'">{{resource.data.title}}</p>
       </div> 
     </div>      
 

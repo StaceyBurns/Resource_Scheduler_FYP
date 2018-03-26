@@ -1,58 +1,77 @@
-<!-- <div *ngIf="!(auth.user | async); else alreadyLoggedIn"> -->
-  <div>
+ <div class="container">
 
-  <h3>Social Login</h3>
+    <div class="row  loginPage">
 
-    <button (click)="signInWithGoogle()" class="button btn-social btn-google">
-      <i class="fa fa-google fa-lg"></i> Connect Google
-    </button>
-
-    <hr>
-
-
-
-    <form [formGroup]="userForm"  *ngIf="!newUser"  (ngSubmit)="login()">
-
-      <h3>Existing User Login</h3>
-    
-      <label for="email-login">Email</label>
-      <input type="email" id="email-login" class="input"
-             formControlName="email" required >
-    
-      <div *ngIf="formErrors.email" class="help is-danger">
-        {{ formErrors.email }}
-      </div>
-    
-      <label for="password-login">Password</label>
-      <input type="password" id="password-login" class="input"
-             formControlName="password" required >
-    
-      <div *ngIf="formErrors.password" class="help is-danger">
-        {{ formErrors.password }}
-      </div>
-    
-      <button type="submit" class="button" [disabled]="!userForm.valid"
-      >Submit</button>
-    
-      <span *ngIf="userForm.valid" class="help is-success">Form Looks Valid</span>
-    
-      <a *ngIf="!passReset && userForm.controls.email.valid" class="help is-info" (click)="resetPassword()">Reset Password for {{userForm.value.email}}?</a>
-      <p *ngIf="passReset" class="help is-info">Reset requested. Check your email instructions.</p>
-      <hr>
-      <p class="btn button is-small" (click)="toggleForm()">New User?</p>
-    
-    </form>
+        <div class="col-md-12" *ngIf="loginType=='login'">
+            <section class="login-form">
+                <form [formGroup]="userForm" *ngIf="!newUser" (ngSubmit)="login()" role="login">
+                    <img src="../../../assets/images/leash_banner_transparent.png" class="img-responsive" alt="leash resource scheduling logo">
+                    <h3 class="text-center">Existing User Login</h3>
+                    <label for="email-login">Email</label>
+                    <input type="email" id="email-login" placeholder="Email" required class="form-control input-lg" formControlName="email" required>
 
 
+                    <div *ngIf="formErrors.email" class="text-danger text-center">
+                        {{ formErrors.email }}
+                    </div>
+
+                    <label for="password-login">Password</label>
+                    <input type="password" id="password-login" class="form-control input-lg" placeholder="Password" formControlName="password" required>
 
 
+                    <div *ngIf="formErrors.password" class="text-danger text-center">
+                        {{ formErrors.password }}
+                    </div>
 
-    <register-page></register-page>
+                    <button type="submit" class="button" [disabled]="!userForm.valid" class="btn btn-lg btn-primary btn-block">
+            Login</button>
 
-</div>
+                    <div class="text-center">
+                        <a *ngIf="!passReset && userForm.controls.email.valid" class="text-center text-primary" (click)="resetPassword()">Reset Password for {{userForm.value.email}}?</a>
+                        <p *ngIf="passReset">Reset requested. Check your email instructions.</p>
+                    </div>
+                </form>
+            </section>
 
-<!-- <ng-template #alreadyLoggedIn>
-  <p class="text-success">
-    Already logged in!
-  </p>
-</ng-template> -->
+
+            <h3 class="text-center">No Account?</h3>
+            <div class="col-md-6">
+                <button class="btn btn-md btn-primary btn-block" (click)="loginType='registerAccount'">
+            Register an Account with an Existing Company</button>
+            </div>
+            <div class="col-md-6">
+                <button class="btn btn-md btn-primary btn-block" (click)="loginType='registerCompany'">
+            Register an Account for your Company</button>
+            </div>
+
+        </div>
+
+
+    </div>
+
+    <div class="loginPage" *ngIf="loginType=='registerAccount'">
+        <register-page></register-page>
+        <h3 class="text-center">No Account?</h3>
+        <div class="col-md-6">
+            <button class="btn btn-md btn-primary btn-block" (click)="loginType='registerCompany'">
+            Register an Account for your Company</button>
+        </div>
+        <div class="col-md-6">
+            <button class="btn btn-md btn-primary btn-block" (click)="loginType='login'">
+            Sign In</button>
+        </div>
+    </div>
+
+    <div class="loginPage" *ngIf="loginType=='registerCompany'">
+        <app-register-company></app-register-company>
+        <h3 class="text-center">Already Have an Company Account?</h3>
+        <div class="col-md-6">
+            <button class="btn btn-md btn-primary btn-block" (click)="loginType='registerAccount'">
+            Register an Account with an Existing Company</button>
+        </div>
+        <div class="col-md-6">
+            <button class="btn btn-md btn-primary btn-block" (click)="loginType='login'">
+            Sign In</button>
+        </div>
+    </div>
+  </div>

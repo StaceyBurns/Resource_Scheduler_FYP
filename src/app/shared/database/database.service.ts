@@ -30,6 +30,9 @@ export class DatabaseService implements OnInit {
 
   calResources: any;
 
+  registeredCompanies = [];
+  registeredEmails = [];
+
 
   loadedCompany: string;
   loadedUser: any;
@@ -48,7 +51,6 @@ export class DatabaseService implements OnInit {
   }
 
   onSignIn() {
-      console.log('on sign in loaded company ' + this.loadedCompany);
       this.loadedCompany = localStorage.getItem('loadedCompany');
       //--------------------------------set resources------------------------------------
       this.resourcesCol = this.afs.collection('companies/').doc(this.loadedCompany).collection('resources');
@@ -76,6 +78,7 @@ export class DatabaseService implements OnInit {
                       };
                   })
               })
+              this.getCompanyName();
   }
 
   getUserOnSignIn(email ? : string) {
@@ -84,15 +87,22 @@ export class DatabaseService implements OnInit {
           {
               querySnapshot.forEach(function(doc) {
                   _this.loadedUser = doc.data();
-                  console.log('loadedUser')
-                  console.log(_this.loadedUser)
-                  console.log(_this.loadedUser['email'])
                   _this.loadedCompany =_this.loadedUser['company'];
                 localStorage.setItem('loadedCompany', _this.loadedUser['company']);
                 _this.onSignIn();
               });
           });
+  }
 
+  getCompanyName(){
+      let _this = this;
+   this.afs.collection('companies').ref.get().then(function(querySnapshot) {
+        querySnapshot.forEach(function(doc) {
+            let data = doc.data();
+            // doc.data() is never undefined for query doc snapshots
+            localStorage.setItem('companyName', (data['name']));
+        });
+    });   
   }
 
 //----------------------------------------------------------------------------------
@@ -110,7 +120,6 @@ export class DatabaseService implements OnInit {
                       company: companyKey
                   });
               });
-              console.log('Adding ' + companyKey + ' to the user ' + user);
               _this.loadedCompany = companyKey;
               localStorage.setItem('loadedCompany', companyKey);
               _this.onSignIn();
@@ -165,10 +174,30 @@ export class DatabaseService implements OnInit {
                 });
             });
         }).then(function() {
-          console.log('OWNER -- adding key ' + _this.loadedCompany + ' to the user ' + user);
           _this.onSignIn();
           _this.router.navigate(['/schedule']);
       });
+}
+
+getAllCompanies() {
+    let _this =this;
+    return this.afs.collection('companies').ref.get().then(function(querySnapshot) {
+        querySnapshot.forEach(function(doc) {
+            let data = doc.data();
+            // doc.data() is never undefined for query doc snapshots
+            _this.registeredCompanies.push(data['key'])
+        });
+    });
+}
+getRegisteredEmails(){
+    let _this =this;
+return this.afs.collection('users').ref.get().then(function(querySnapshot) {
+    querySnapshot.forEach(function(doc) {
+        let data = doc.data();
+        // doc.data() is never undefined for query doc snapshots
+        _this.registeredEmails.push(data['email'])
+    });
+});
 }
 
 
@@ -186,44 +215,37 @@ export class DatabaseService implements OnInit {
       });
   }
 
-  getdaydata() { //returns object matching particular resource
-      this.afs.collection('days')
-          .ref.where('title', '==', 'Gggg')
-          .get()
-          .then(function(querySnapshot) {
-              querySnapshot.forEach(function(doc) {
-                  console.log(doc.id, " => ", doc.data());
-              });
-          })
-          .catch(function(error) {
-              console.log("Error getting documents: ", error);
-          });
-  }
+//   getdaydata() { //returns object matching particular resource
+//       this.afs.collection('days')
+//           .ref.where('title', '==', 'Gggg')
+//           .get()
+//           .then(function(querySnapshot) {
+//               querySnapshot.forEach(function(doc) {
+//                   console.log(doc.id, " => ", doc.data());
+//               });
+//           })
+//           .catch(function(error) {
+//           });
+//   }
 //----------------------------------------------------------------------------------
 //-----------------------Schedule events--------------------------------------------
 //----------------------------------------------------------------------------------
 
-    getScheduledDates(resource, date) {
+    getScheduledDates(resource) {
         let _this = this;
         this.loadedResourceDates = [];
         return this.afs.collection("companies").doc(this.loadedCompany).collection('resources').ref.where('title', '==', resource).get().then(function(querySnapshot)
             {
                 querySnapshot.forEach(function(doc) {
                     let data = doc.data();
-                    console.log(' get schedule dates function');
                     for(let i=0; i<data['start'].length; i++){
                     _this.loadedResourceDates.push(data['start'][i]);
                     }
-                    console.log('loaded schedule dates after push')
-                    console.log(_this.loadedResourceDates)
-                    console.log('loaded resource')
-                    console.log('from getscheduledates - delete cal date '+ resource+ ' resource '+ date)
                 });
             });            
     }
 
   testAddDate(resource, date) {
-    console.log(this.loadedResourceDates);
     this.loadedResourceDates.push(date);
     console.log('dates array after new date pushed');
     console.log(this.loadedResourceDates);
@@ -279,15 +301,13 @@ export class DatabaseService implements OnInit {
               console.log("Error getting documents: ", error);
           });
           let _this = this;
-          this.getScheduledDates(resourceTitle, dateID).then(function(){
+          this.getScheduledDates(resourceTitle).then(function(){
             for (var i=_this.loadedResourceDates.length-1; i>=0; i--) {
                 if (_this.loadedResourceDates[i] === dateID) {
-                    console.log('Found match to delete!');
                     _this.loadedResourceDates.splice(i, 1);
                 }
             }
         }).then(function(){
-            console.log('right before delete happens '+ _this.loadedResourceDates)
             let resCollectionRef = _this.afs.collection('companies/').doc(_this.loadedCompany).collection('resources');
             resCollectionRef.ref.where("title", "==", resourceTitle)
             .get()
@@ -327,12 +347,17 @@ export class DatabaseService implements OnInit {
   }
 
   editResource(name, note, group, schedulingDepend) {
-      this.afs.collection('companies/').doc(this.loadedCompany).collection('resources/').doc(this.selectedResource).update({
+      let _this = this;
+    this.getScheduledDates(name).then(function(){
+        console.log(_this.loadedResourceDates);
+      _this.afs.collection('companies/').doc(_this.loadedCompany).collection('resources/').doc(_this.selectedResource).update({
           title: name,
           note: note,
           group: group,
+          start:  _this.loadedResourceDates,
           schedulingDependency: schedulingDepend
       });
+    })
   }
 
 //----------------------------------------------------------------------------------
@@ -370,12 +395,6 @@ editGroup(name, note) {
 
 
 filterByGrouup(group:any){
-    // this.resourcesCol = this.afs.collection('companies/').doc(this.loadedCompany).collection('resources'), ref =>{
-    //     return ref.where ('group', '==', group);
-    // })
-    // this.resources = this.resourcesCol.valueChanges();
-    // console.log('FILTER function running woth argument ' + group)
-
     this.resourcesCol = this.afs.collection('companies/').doc(this.loadedCompany).collection('resources', ref =>{
             return ref.where("group", "==", group);
     })

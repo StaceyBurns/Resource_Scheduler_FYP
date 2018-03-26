@@ -1,39 +1,32 @@
-<p>
-  register-company works!
-</p>
+<div class="row">
+    <div class="col-md-12">
+        <section class="login-form">
+            <form [formGroup]="userForm"  (ngSubmit)="signupCompany()" role="login">
+                <img src="../../../assets/images/leash_banner_transparent.png" class="img-responsive" alt="leash resource scheduling logo">
+                <h3 class="text-center">Register a New Company</h3>
 
-<form [formGroup]="userForm"  (ngSubmit)="signupCompany()">
 
-  <h3>Register a New Organization</h3>
+                <label for="email-r-c">Email</label>
+                <input type="email" id="email-r-c" placeholder="Email" required class="form-control input-lg" formControlName="email" required>
+              
+                <div *ngIf="formErrors.email" class="text-danger text-center">
+                  {{ formErrors.email }}
+                </div>
 
 
-  <label for="email-r-c">Email</label>
-  <input type="email" id="email-r-c" class="input"
-         formControlName="email" required >
+                <input type="password" id="password-r-c" class="form-control input-lg" placeholder="Password" formControlName="password" required>
+              
+                <div *ngIf="formErrors.password" class="text-danger text-center">
+                    {{ formErrors.password }}
+                </div>
 
-  <div *ngIf="formErrors.email" class="notification is-danger">
-    {{ formErrors.email }}
-  </div>
 
-  <label for="password-r-c">Password</label>
-  <input type="password" id="password-r-c" class="input"
-         formControlName="password" required >
+                <label for="company-r-c">Company Name</label>
+                <input type="text" id="company-r-c" placeholder="Company Name" required class="form-control input-lg" formControlName="company" required>
 
-  <div *ngIf="formErrors.password" class="notification is-danger">
-    {{ formErrors.password }}
-  </div>
 
-  <label for="company-r-c">Company Name</label>
-  <input type="text" id="company-r-c" class="input"
-  formControlName="company" required >
-
-  <!-- <label for="company">Company Key (this will be used to register new users)</label>
-  <input type="text" id="companyKey" class="input"
-  formControlName="companyKey" required > -->
-
-  <div *ngIf="userForm.valid" class="notification is-success">Form is valid</div>
-  <button type="submit" class="button" [disabled]="!userForm.valid"
-  >Submit</button>
-  <hr>
-  <p class="btn button is-small" (click)="toggleForm()">Already Registered?</p>
-</form>
+                <button type="submit" class="button" [disabled]="!userForm.valid" class="btn btn-lg btn-primary btn-block">
+                Register Company</button>
+            </form>
+        </section>
+</div>

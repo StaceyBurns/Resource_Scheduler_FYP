@@ -14,7 +14,8 @@ type FormErrors = { [u in UserFields]: string };
   styleUrls: ['./register-page.component.css'],
 })
 export class RegisterPageComponent implements OnInit {
-
+  registeredCompanies:any;
+  registeredEmails: any;
   userForm: FormGroup;
   newUser = false; // to toggle login or signup form 
   passReset = false; // set to true when password reset is triggered
@@ -27,12 +28,18 @@ export class RegisterPageComponent implements OnInit {
     'email': {
       'required': 'Email is required.',
       'email': 'Email must be a valid email',
+      'company': 'Invalid company key',
+      'invalid': 'Email already in use'
     },
     'password': {
       'required': 'Password is required.',
       'pattern': 'Password must be include at one letter and one number.',
-      'minlength': 'Password must be at least 4 characters long.',
+      'minlength': 'Password must be at least 6 characters long, including one digit.',
       'maxlength': 'Password cannot be more than 40 characters long.',
+    },
+    'company': {
+      'required': 'Company key is required.',
+      'invalid': 'Invalid company key',
     },
   };
 
@@ -40,6 +47,9 @@ export class RegisterPageComponent implements OnInit {
 
   ngOnInit() {
     this.buildForm();
+    this.db.getAllCompanies();
+    this.registeredCompanies = this.db.registeredCompanies;
+    this.registeredEmails = this.db.registeredEmails;
   }
 
   toggleForm() {
@@ -47,32 +57,43 @@ export class RegisterPageComponent implements OnInit {
   }
 
   signup() {
-    this.auth.emailSignUp(this.userForm.value['email'], this.userForm.value['password'], this.userForm.value['company']);
-    this.registerUserWithCompany(this.userForm.value['email'], this.userForm.value['company']);
+    let _this = this;
+    this.db.getRegisteredEmails().then(function(){
+      if(_this.registeredEmails.includes(_this.userForm.value['email'])){
+        _this.formErrors.email = "Email already in use";
+        _this.userForm.controls['email'].setErrors({'invalid': true});
+        } else {
+        _this.allowSignup();
+        }
+
+      })
+
   }
 
-  // login() {
-  //   this.auth.emailLogin(this.userForm.value['email'], this.userForm.value['password'])
-  //   .then(() => this.afterSignIn());
+  allowSignup(){
+
+    if(this.registeredCompanies.includes(this.userForm.value['company'])){
+      this.auth.emailSignUp(this.userForm.value['email'], this.userForm.value['password'], this.userForm.value['company']);
+      this.registerUserWithCompany(this.userForm.value['email'], this.userForm.value['company']);
+      this.registeredEmails =[];
+      this.db.registeredEmails = [];
+      } else {
+        console.log('invalid company key')
+        this.formErrors.company = "invalid company key";
+        this.userForm.controls['company'].setErrors({'invalid': true});
+      }
+
+  }
+
+  // private afterSignIn() {
+  //   // Do after login stuff here, such router redirects, toast messages, etc.
+  //   console.log('after sign in..');
+  //   this.router.navigate(['/schedule']);
   // }
-
-  private afterSignIn() {
-    // Do after login stuff here, such router redirects, toast messages, etc.
-    console.log('after sign in..');
-    this.router.navigate(['/schedule']);
-  }
 
   private registerUserWithCompany(user, companyKey) {
-    // Do after login stuff here, such router redirects, toast messages, etc.
-    console.log('registering user '+user +' with company ' +companyKey);
-    console.log('!!!');
     this.db.registerUserWithCompany(user, companyKey);
   }
-
-  // resetPassword() {
-  //   this.auth.resetPassword(this.userForm.value['email'])
-  //     .then(() => this.passReset = true);
-  // }
 
   buildForm() {
     this.userForm = this.fb.group({

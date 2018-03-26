@@ -16,6 +16,7 @@ type FormErrors = { [u in UserFields]: string };
 })
 export class RegisterCompanyComponent implements OnInit {
 
+  registeredEmails: any;
   userForm: FormGroup;
   newUser = false; // to toggle login or signup form 
   passReset = false; // set to true when password reset is triggered
@@ -29,11 +30,12 @@ export class RegisterCompanyComponent implements OnInit {
     'email': {
       'required': 'Email is required.',
       'email': 'Email must be a valid email',
+      'invalid': 'Email already in use'
     },
     'password': {
       'required': 'Password is required.',
       'pattern': 'Password must be include at one letter and one number.',
-      'minlength': 'Password must be at least 4 characters long.',
+      'minlength': 'Password must be at least 6 characters long, including one digit.',
       'maxlength': 'Password cannot be more than 40 characters long.',
     },
   };
@@ -42,6 +44,7 @@ export class RegisterCompanyComponent implements OnInit {
 
   ngOnInit() {
     this.buildForm();
+    this.registeredEmails = this.db.registeredEmails;
   }
 
   toggleForm() {
@@ -50,25 +53,27 @@ export class RegisterCompanyComponent implements OnInit {
 
   signupCompany() {
     let _this = this;
-    this.auth.newCompanySignUp(this.userForm.value['email'], this.userForm.value['password'], this.userForm.value['company']).then(function() {
-    _this.db.registerNewCompany(_this.userForm.value['email'], _this.userForm.value['company']);
+    this.db.getRegisteredEmails().then(function(){
+      if(_this.registeredEmails.includes(_this.userForm.value['email'])){
+        console.log('email already exists')
+        _this.formErrors.email = "Email already in use";
+        _this.userForm.controls['email'].setErrors({'invalid': true});
+        } else {
+          _this.auth.newCompanySignUp(_this.userForm.value['email'], _this.userForm.value['password'], _this.userForm.value['company']).then(function() {
+          _this.db.registerNewCompany(_this.userForm.value['email'], _this.userForm.value['company']);
+          this.registeredEmails =[];
+          this.db.registeredEmails = [];
+        })
+        }
   });
 
-    // this.db.registerOwnerWithCompany(this.userForm.value['email']);
   }
 
-  private afterSignIn() {
-    // Do after login stuff here, such router redirects, toast messages, etc.
-    console.log('after sign in..');
-    this.router.navigate(['/schedule']);
-  }
-
-  // private registerNewCompany(user, company) {
+  // private afterSignIn() {
   //   // Do after login stuff here, such router redirects, toast messages, etc.
-  //   console.log('registering user '+user +' with company ' +company);
-  //   console.log('!!!');
-  //   this.db.registerNewCompany(user, company);
+  //   this.router.navigate(['/schedule']);
   // }
+
 
   buildForm() {
     this.userForm = this.fb.group({

@@ -7,10 +7,11 @@ import { AuthService } from '../core/auth.service';
   styleUrls: ['./user-profile.component.css']
 })
 export class UserProfileComponent implements OnInit {
-
+  companyName: string;
   constructor(public auth: AuthService) { }
 
   ngOnInit() {
+    this.companyName = localStorage.getItem('companyName');
   }
 
 }

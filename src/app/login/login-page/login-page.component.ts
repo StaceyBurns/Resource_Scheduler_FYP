@@ -14,6 +14,8 @@ type FormErrors = { [u in UserFields]: string };
 })
 export class LoginPageComponent {
 
+  loginType:string;
+
   userForm: FormGroup;
   newUser = false; // to toggle login or signup form 
   passReset = false; // set to true when password reset is triggered
@@ -29,7 +31,7 @@ export class LoginPageComponent {
     'password': {
       'required': 'Password is required.',
       'pattern': 'Password must be include at one letter and one number.',
-      'minlength': 'Password must be at least 4 characters long.',
+      'minlength': 'Password must be at least 6 characters long, including one digit.',
       'maxlength': 'Password cannot be more than 40 characters long.',
     },
   };
@@ -40,6 +42,7 @@ export class LoginPageComponent {
 
   ngOnInit(){
     this.buildForm();
+    this.loginType = "login";
   }
 
   login() {
@@ -103,7 +106,6 @@ export class LoginPageComponent {
   /// Shared
   private afterSignIn() {
     // Do after login stuff here, such router redirects, toast messages, etc.
-    console.log('after sign in..');
     this.router.navigate(['/schedule']);
   }
 

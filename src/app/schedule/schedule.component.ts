@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { SeaterPipe } from '../seater.pipe';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { Observable } from 'rxjs/Observable';
 import {DatabaseService} from '../shared/database/database.service';
@@ -24,8 +23,7 @@ export class ScheduleComponent implements OnInit {
     this.resource = this.db.resource;
     this.groups = this.db.groups;
     this.group = this.db.groups;
-    this.db.getdaydata()
-    this.selectedGroup = "";
+    this.selectedGroup = "noDependencySelected";
   }
   loadedDisplay = 'resources';
   selectedGroup:string;
@@ -38,9 +36,6 @@ export class ScheduleComponent implements OnInit {
   constructor(private db: DatabaseService, private calendar:CalendarOverviewComponent) {
 }
 
-  // ngOnChanges(){
-  //   this.db.filterByGrouup(this.selectedGroup);
-  // }
 
 resources: Observable<Resource[]>;
 resource: Observable<Resource>;
@@ -68,10 +63,6 @@ filterByGroup(group:string){
   //     console.log('Item:', item);
   // });
   // }, 1000); 
-}
-
-getdaydata(){
-  this.db.getdaydata()
 }
 
 refreshCalendar(){

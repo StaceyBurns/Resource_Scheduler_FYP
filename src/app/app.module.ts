@@ -50,8 +50,6 @@ import { GroupsComponent } from './groups/groups.component';
 import { GroupAddComponent } from './groups/group-add/group-add.component';
 import { GroupEditComponent } from './groups/group-edit/group-edit.component';
 import { GroupDetailComponent } from './groups/group-detail/group-detail.component';
-import { SeaterPipe } from './seater.pipe';
-import { ScheduleDatePipe } from './schedule-date.pipe';
 
 var firebaseConfig = {
   apiKey: "AIzaSyD-mgAQdIx5NYBpWgXyfnV4caztBgS4ylQ",
@@ -89,9 +87,7 @@ var firebaseConfig = {
     GroupsComponent,
     GroupAddComponent,
     GroupEditComponent,
-    GroupDetailComponent,
-    SeaterPipe,
-    ScheduleDatePipe
+    GroupDetailComponent
   ],
   imports: [
     BrowserModule,

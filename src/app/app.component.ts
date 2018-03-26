@@ -1,10 +1,5 @@
 import { Component } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map'
 import {Router} from "@angular/router";
-import {AuthService} from './core/auth.service';
-
 
 @Component({
   selector: 'app-root',
@@ -12,15 +7,8 @@ import {AuthService} from './core/auth.service';
   styleUrls: ['./app.component.css']
 })
 
-
-
 export class AppComponent {
-  loadedFeature = 'schedule'
-  onNavigate(feature:string){
-    this.loadedFeature=feature;
-  }
-
-
+  constructor(private router: Router) { }
 
   ngOnInit(){
   }
