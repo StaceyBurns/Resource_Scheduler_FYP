@@ -28,7 +28,7 @@
             <p>{{resource.data.title}}</p>
             <p *ngIf="resource.data.schedulingDependency !='noDependencySelected'">{{resource.data.schedulingDependency}}</p>
             </div>
-            <p *ngIf="resource.data.resourceToResource">{{resource.data.resourceToResource[0][day.dateID]}}</p>
+            <p *ngIf="resource.data.resourceToResource[0]">{{resource.data.resourceToResource[0][day.dateID]}}</p>
           <fa *ngIf="resource.data.start.includes(day.dateID)" (click)="editCalEvent(day.dateID, resource.data.title)" [name]="'trash'" [size]=1></fa>
           </td>
         </tr>
