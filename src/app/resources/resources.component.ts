@@ -26,6 +26,7 @@ export class ResourcesComponent implements OnInit {
   }
   resources: any;
   resource: Observable<Resource>;
+  selectedResourceId:string;
 
   getResource(resourceId){
     this.db.getResource(resourceId);
@@ -33,6 +34,8 @@ export class ResourcesComponent implements OnInit {
   }
   deleteResource(resourceId){
     this.db.deleteResource(resourceId);
+    this.activeItem = "";
+    this.selectedResourceId = null;
   }
   addResource(name, note, group, schedulingDepend){
     this.db.addResource(name, note, group, schedulingDepend);

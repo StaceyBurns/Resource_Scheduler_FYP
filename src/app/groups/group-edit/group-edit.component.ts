@@ -23,9 +23,8 @@ export class GroupEditComponent implements OnInit {
   groups: any;
   @Input() group:Observable<Group>;
 
-  saveEdit(name, note){
-    console.log('Name: '+name +' Note ' +note);
-    this.db.editGroup(name, note);
+  saveEdit(note){
+    this.db.editGroup(note);
   }
 
 }

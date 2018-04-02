@@ -278,10 +278,58 @@ return this.afs.collection('users').ref.get().then(function(querySnapshot) {
 
 }
 
+scheduleResourceToResource(resource, date) {
+
+    let restores = [
+        {
+            [date]: resource
+        }
+    ];
+    
+    // restores["date"] = "resource";
+    let collectionRef = this.afs.collection('companies/').doc(this.loadedCompany).collection('resources');
+    collectionRef.ref.where("title", "==", resource)
+        .get()
+        .then(querySnapshot => {
+            querySnapshot.forEach((doc) => {
+                doc.ref.update({
+                    resourceToResource: restores
+                })
+            })
+            console.log('R to R scheduled for ' + resource)
+        })
+
+
+    return this.afs.collection('companies/').doc(this.loadedCompany).collection('schedule').add({
+        start: date,
+        title: resource
+    }).then(function() {
+        console.log('schedule item added')
+    });
+
+    //-----------Add something like this if the resource is new
+
+    // return this.afs.collection('companies/').doc(this.loadedCompany).collection('resources').add({
+    //     title: "straight from db",
+    //     start: date,
+    //     resource: resource
+    // });
+
+}
+
+
+
+
+
+
+
+
+
+
   // delete field data for match
   //check if array needs to be processed backwards
   deleteCalEvent(dateID, resourceTitle) {
-      console.log('from delete calevent delete cal date '+ dateID + ' resource '+ resourceTitle)
+      console.log('from delete calevent delete cal date '+ dateID + ' resource '+ resourceTitle);
       let collectionRef = this.afs.collection('companies/').doc(this.loadedCompany).collection('schedule');
       collectionRef.ref.where("title", "==", resourceTitle).where("start", "==", dateID)
           .get()
@@ -290,8 +338,11 @@ return this.afs.collection('users').ref.get().then(function(querySnapshot) {
                   doc.ref.update({
                       title: '',
                       start: ''
-                  }).then(() => {
+                  }).then(function(){
                       console.log("Document successfully deleted!");
+                      
+
+                      
                   }).catch(function(error) {
                       console.error("Error removing document: ", error);
                   });
@@ -382,9 +433,8 @@ deleteGroup(groupId) {
     this.afs.collection('companies/').doc(this.loadedCompany).collection('groups').doc(groupId).delete();
 }
 
-editGroup(name, note) {
+editGroup(note) {
     this.afs.collection('companies/').doc(this.loadedCompany).collection('groups/').doc(this.selectedGroup).update({
-        name: name,
         note: note
     });
 }

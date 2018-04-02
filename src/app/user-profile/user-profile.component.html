@@ -1,11 +1,15 @@
-<div *ngIf="auth.user | async as user">
-  <h3>Howdy, {{ user.email }}</h3>
-  <img  [src]="user.photoURL">
-  <!-- <p>UID: {{ user.uid }}</p> -->
-  <h2>Company</h2>
-  <p>{{companyName}}</p>
-  <h2>Company Key </h2>
-  <p>{{ user?.company }} </p>
-  <p>Use this key to register new accounts with this company</p>
-  <button (click)="auth.signOut()">Logout</button>
+<div *ngIf="auth.user | async as user" class="leash-bg-deep-red container-fluid">
+  <div class="row">
+    <div class="col-md-8 col-md-offset-4 text-white">
+      <h3>Howdy, {{ user.email }}</h3>
+      <img  [src]="user.photoURL">
+      <!-- <p>UID: {{ user.uid }}</p> -->
+      <h2>Company</h2>
+      <p>{{companyName}}</p>
+      <h2>Company Key </h2>
+      <p>{{ user?.company }} </p>
+      <p> <fa [name]="'question-circle'" [size]=1></fa>Use this key to register new accounts with this company</p>
+      <button (click)="auth.signOut()">Logout</button>
+    </div>
+  </div>
 </div>

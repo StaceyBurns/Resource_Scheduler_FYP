@@ -1,9 +1,10 @@
-<div *ngIf="resource===undefined ; else showAddResource" class="col-sm-8 bg-info text-white full-height">
-    <h3>No resource selected</h3>
-</div>
-    
-<ng-template #showAddResource>  
-    <h1>{{ ( resource | async)?.name }}</h1>
+
+    <h1>{{ ( resource | async)?.title }}</h1>
     <h3>Notes</h3>
-    <p>{{ ( resource | async)?.note }}</p>  
-</ng-template>
+    <p>{{ ( resource | async)?.note }}</p>
+    <div *ngIf="(resource | async)?.group !='noDependencySelected'"  class="bg-light"> 
+    <h3>Scheduling</h3>
+    <p>This resource can only be scheduled with resources in the group <b>{{(resource | async)?.group}}</b></p>
+    </div> 
+
+

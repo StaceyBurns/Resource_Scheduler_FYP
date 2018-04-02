@@ -48,12 +48,12 @@ export class CalendarOverviewComponent{
     });
 
     this.calendarOptions = {
-      editable: true,
+      editable: false,
       eventLimit: false,
       header: {
         left: 'prev,next today',
         center: 'title',
-        right: 'month,agendaWeek,agendaDay,listMonth'
+        right: 'month, listMonth'
       },
       events: this.calResources
     };
@@ -72,7 +72,7 @@ export class CalendarOverviewComponent{
       header: {
         left: 'prev,next today',
         center: 'title',
-        right: 'month,agendaWeek,agendaDay,listMonth'
+        right: 'month, listMonth'
       },
       events: this.calResources ,
     };
@@ -81,7 +81,7 @@ export class CalendarOverviewComponent{
     this.loadCalendar = true;
   }
 
-  secondCal = false;
+  // secondCal = false;
   
   refreshCalendar(){
     let _this = this;
@@ -116,12 +116,12 @@ export class CalendarOverviewComponent{
  
     console.log('load cal status..........' + this.loadCalendar)
     this.calendarOptions = {
-      editable: true,
+      editable: false,
       eventLimit: false,
       header: {
         left: 'prev,next today',
         center: 'title',
-        right: 'month,agendaWeek,agendaDay,listMonth'
+        right: 'month, listMonth'
       },
       events: this.calResources
     };

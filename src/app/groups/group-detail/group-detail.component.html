@@ -1,9 +1,5 @@
-<div *ngIf="group===undefined ; else showAddGroup" class="col-sm-8 bg-info text-white full-height">
-  <h3>No group selected</h3>
-</div>
-  
-<ng-template #showAddGroup>  
+ 
   <h1>{{ ( group | async)?.name }}</h1>
   <h3>Notes</h3>
   <p>{{ ( group | async)?.note }}</p>  
-</ng-template>
+  

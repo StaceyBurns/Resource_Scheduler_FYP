@@ -1,15 +1,10 @@
-<p>
-  groups works!
-</p>
-
-
 <div class="row">
-  <div class="col-sm-4 bg-primary text-white full-height">
+  <div class="col-sm-4 leash-bg-light text-white full-height">
     <br>
       <button class="btn btn-success" (click) ="activeItem = 'addGroup'">New Group</button>
       <br> <br> <br>
       <ul class="list-group">
-          <li class="list-group-item text-muted" *ngFor = "let group of groups | async" (click) = "getGroup(group.id) ; activeItem= group.data.name ; editMode = false" [ngClass]="{active: activeItem ===  group.data.name}" >
+          <li class="list-group-item text-muted" *ngFor = "let group of groups | async" (click) = "selectedGroupId = group.id ; getGroup(group.id) ; activeItem= group.data.name ; editMode = false" [ngClass]="{active: activeItem ===  group.data.name}" >
             <strong>{{group.data.name}} (<button (click)="deleteGroup(group.id)" class="text-danger">Delete</button>)</strong>
             <br>
             {{group.data.note}}
@@ -17,11 +12,24 @@
       </ul>
   </div>
   
-  <div *ngIf="activeItem !='addGroup' ; else showAddGroup" class="col-sm-8 bg-info text-white full-height">
-      <div *ngIf="editMode !=true ; else showEditGroup" class="col-sm-8 bg-info text-white full-height">
+  <div *ngIf="activeItem !='addGroup' ; else showAddGroup" class="col-sm-8 leash-bg-white text-white full-height">
+      <div *ngIf="editMode !=true ; else showEditGroup" class="col-sm-8 leash-bg-white text-white full-height">
+          <div *ngIf="!selectedGroupId ; else showGroupDetail" class="col-sm-8 leash-bg-white text-white full-height">
+              <h3>No group selected</h3>
+          </div>
+          <ng-template #showGroupDetail> 
           <app-group-detail [group]='group'></app-group-detail>
+        </ng-template>
           <br>
-          <button class="btn btn-info" (click)="editMode = true">Edit</button>
+          <div *ngIf="selectedGroupId" class="text-center">
+            <div class="col-md-6">
+              <button class="btn btn-xs btn-block leash-bg-light" (click)="editMode = true"><fa [name]="'edit'" [size]=3></fa><p>Edit</p></button>
+            </div>
+              <div class="col-md-6">
+              <button class="btn btn-xs btn-block leash-bg-light" (click)="deleteGroup(selectedGroupId)"><fa [name]="'trash'" [size]=3></fa><p>Delete</p></button>
+          </div>
+        </div>
+          
   </div>
   <ng-template #showEditGroup > 
       <app-group-edit [group]='group'></app-group-edit>

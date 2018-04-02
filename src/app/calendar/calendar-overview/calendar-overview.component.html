@@ -1,10 +1,6 @@
-<p>
-  calendar-overview works!
-</p>
-<button (click)="refetch()" id="fetchButton">refetch</button>
+<button [hidden]="'hide'" (click)="refetch()" id="fetchButton">refetch</button>
 <div  *ngIf="loadCalendar">
     <angular2-fullcalendar id="myCalendar" *ngIf="loadCalendar" [options]="calendarOptions" ></angular2-fullcalendar>
 </div>
-    <!-- <angular2-fullcalendar *ngIf="secondCal" [options]="calendarOptions" ></angular2-fullcalendar> -->
 
 

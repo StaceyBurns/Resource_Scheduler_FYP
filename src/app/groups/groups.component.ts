@@ -22,6 +22,7 @@ export class GroupsComponent implements OnInit {
   }
   groups: any;
   group: Observable<Group>;
+  selectedGroupId:string;
 
   getGroup(groupId){
     this.db.getGroup(groupId);
@@ -29,6 +30,7 @@ export class GroupsComponent implements OnInit {
   }
   deleteGroup(groupId){
     this.db.deleteGroup(groupId);
+    this.selectedGroupId = null;
   }
   addGroup(name, note){
     this.db.addGroup(name, note);

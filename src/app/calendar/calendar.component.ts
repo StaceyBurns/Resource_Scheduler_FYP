@@ -22,7 +22,7 @@ export class CalendarComponent implements OnInit {
     this.dayString = this.days[this.d.getDay()];
     this.dayNum = this.d.getDate();
     this.monthNum = this.d.getMonth();
-    this.monthNum = 2; //get rid of this
+    this.monthNum = this.monthNum +1
     this.monthString = this.months[this.d.getMonth()];
     this.year = this.d.getFullYear();
     this.updateDate();
@@ -95,7 +95,6 @@ for (let i = 1; i < this.monthLength; i++) {
 prevMonth(){
   this.monthNum --;
   this.updateDate();
-  // console.log('month ' +this.monthNum);
 }
 
 nextMonth(){
@@ -111,7 +110,6 @@ updateDate() {
     this.monthNum = 12;
     this.year --;
   }
-  console.log('errrrrr'+this.monthString);
   this.monthString = this.months[this.monthNum];
   this.calDisplay = this.monthString + ',' + this.year;
   this.getMonthLength();
@@ -124,15 +122,11 @@ getMonthLength(){
   if(this.monthString == 'Jan' || this.monthString == 'Mar' || this.monthString == 'May' || this.monthString == 'Jul' || this.monthString == 'Aug' || this.monthString == 'Oct' || this.monthString == 'Dec'){
     this.monthLength = 32;
     console.log(this.monthString);
-    console.log('31 days in this month!!!!!!!!!!!!!!!!!!!!!!!!');
   } else if(this.monthString == 'Feb') {
     this.monthLength = 29;
-    console.log('29 days in this month!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
   } else{
     this.monthLength = 31;
-    console.log('30 days in this month!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
   }
-  console.log('get month length')
 }
 
 editCalEvent(dateID, resourceTitle){

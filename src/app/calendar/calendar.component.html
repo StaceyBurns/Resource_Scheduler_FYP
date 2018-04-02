@@ -1,24 +1,16 @@
-<p>
-    calendar works!
-  </p>
-  
-  <div id="customCal">
+<div id="customCal">
     <table class="calendar-size">
       <thead>
     <tr>
-      <!-- <th>Empty...</th> -->
-      <th class="col-xl-12 calendar-size">
-          <button (click)= "prevMonth()">Prev Month</button>
-      
-          <h1>{{calDisplay}}</h1>
-      
-          <button (click)= "nextMonth()">Next Month</button>
+      <th class="col-xl-12 calendar-size leash-inline-block">
+          <button (click)= "prevMonth()" class="leash-inline-block">Prev Month</button>
+          <h1 class="leash-inline-block">{{calDisplay}}</h1>
+          <button (click)= "nextMonth()" class="leash-inline-block">Next Month</button>
       </th>
     </tr>
 
 
     <tr>
-      <!-- <th>Empty..</th> -->
       <th scope="col" class="calendar-header-days"></th> 
         <th scope="col" class="calendar-header-days" *ngFor="let day of daysInMonth ">
           
@@ -29,24 +21,16 @@
     </tr>
   </thead>
 
-      <tr class="list-group-item text-muted" *ngFor = "let resource of resources | async">  
-        <!-- <th> Empty..</th> -->
+      <tr class="list-group-item text-muted tr-resource" *ngFor = "let resource of resources | async">  
         <td class="calendar-row calendar-resource-head">{{resource.data.title}}</td>
-        
         <td class="calendar-row" id="{{day.dateID}}"  *ngFor="let day of daysInMonth">
-          <!-- <p>{{resource.data?.start}}</p> -->
-          <!-- <P>{{day.dateID}}</P> -->
-          <p *ngIf="resource.data.start.includes(day.dateID)">MATCH!!</p>
-          <!-- <p>{{resource.data.start}}</p> -->
-          <button (click)="editCalEvent(day.dateID, resource.data.title)"></button>
+          <div *ngIf="resource.data.start.includes(day.dateID)"> 
+            <p>{{resource.data.title}}</p>
+            <p *ngIf="resource.data.schedulingDependency !='noDependencySelected'">{{resource.data.schedulingDependency}}</p>
+            </div>
+            <p *ngIf="resource.data.resourceToResource">{{resource.data.resourceToResource[0][day.dateID]}}</p>
+          <fa *ngIf="resource.data.start.includes(day.dateID)" (click)="editCalEvent(day.dateID, resource.data.title)" [name]="'trash'" [size]=1></fa>
           </td>
-  
-
-
-
-
-    
         </tr>
     </table>
 </div>
-

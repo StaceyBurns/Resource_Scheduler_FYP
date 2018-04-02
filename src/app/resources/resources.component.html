@@ -1,11 +1,11 @@
 
 <div class="row">
-  <div class="col-sm-4 bg-primary text-white full-height">
+  <div class="col-sm-4 leash-bg-light text-white full-height">
     <br>
       <button class="btn btn-success" (click) ="activeItem = 'addResource'">New Resource</button>
       <br> <br> <br>
       <ul class="list-group">
-          <li class="list-group-item text-muted" *ngFor = "let resource of resources | async" (click) = "getResource(resource.id) ; activeItem= resource.data.title ; editMode = false" [ngClass]="{active: activeItem ===  resource.data.title}" >
+          <li class="list-group-item text-muted" *ngFor = "let resource of resources | async" (click) = "selectedResourceId = resource.id ; getResource(resource.id) ; activeItem= resource.data.title ; editMode = false" [ngClass]="{active: activeItem ===  resource.data.title}" >
             <strong>{{resource.data.title}} (<button (click)="deleteResource(resource.id)" class="text-danger">Delete</button>)</strong>
             <br>
             {{resource.data.note}}
@@ -13,20 +13,37 @@
       </ul>
   </div>
   
-  <div *ngIf="activeItem !='addResource' ; else showAddResource" class="col-sm-8 bg-info text-white full-height">
-      <div *ngIf="editMode !=true ; else showEditResource" class="col-sm-8 bg-info text-white full-height">
+  <div *ngIf="activeItem !='addResource' ; else showAddResource" class="col-sm-8 leash-bg-white text-white full-height">
+      <div *ngIf="editMode !=true ; else showEditResource" class="col-sm-8 leash-bg-white text-white full-height">
+            <div *ngIf="!selectedResourceId ; else showResourceDetail" class="col-sm-8 leash-bg-white text-white full-height">
+                    <h3>No resource selected</h3>
+            </div>
+            <ng-template #showResourceDetail>  
           <app-resource-detail [resource]='resource'></app-resource-detail>
+        </ng-template>
           <br>
-          <button class="btn btn-info" (click)="editMode = true">Edit</button>
-  </div>
+          <div *ngIf="selectedResourceId" class="text-center">
+                <div class="col-md-6">
+                  <button class="btn btn-xs btn-block leash-bg-light" (click)="editMode = true"><fa [name]="'edit'" [size]=3></fa><p>Edit</p></button>
+                </div>
+                  <div class="col-md-6">
+                  <button class="btn btn-xs btn-block leash-bg-light" (click)="deleteResource(selectedResourceId)"><fa [name]="'trash'" [size]=3></fa><p>Delete</p></button>
+              </div>
+            </div>
+        </div>
+  
+  
+        
   <ng-template #showEditResource > 
       <app-resource-edit [resource]='resource'></app-resource-edit>
   </ng-template>
+</div>
 
-  </div>
+
+
       
     <ng-template #showAddResource > 
-        <app-resource-add></app-resource-add>
+        <app-resource-add ></app-resource-add>
     </ng-template>
   </div>
 

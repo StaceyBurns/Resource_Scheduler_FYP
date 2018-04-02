@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-sm-4 bg-primary text-white full-height">
+  <div class="col-sm-4 leash-bg-light text-white full-height">
     <div class="btn-group btn-group-justified" data-toggle="buttons">
         <label class="btn btn-primary">
           <input type="radio" name="overview" id="overview" (click) ="loadedDisplay='overview'"> Overview
@@ -44,16 +44,8 @@
       <div *ngIf="loadedDisplay==='overview'">
         <h1>Show the full view!</h1>
           <h2>Add directly to the schedule here!</h2>
-
-
-
-
-
-
-
-
-<!-- -------------------------DATE SELECTION------------------ -->
-
+<!-- -------------------------SCHEDULE SINGLE RESOURCE------------------ -->
+<h1>Schedule a resource</h1>
           <form>
               Date<br>
               <input type="date" name="date" #date><br>
@@ -61,20 +53,44 @@
               <select #resource>
                   <option name="resource" *ngFor="let resource of resources | async" [id]="resource.data.title" [value]="resource.data.title">{{resource.data.title}}</option>
               </select>
-              <input type="submit" (click)="takeForm(resource.value, date.value,  id)" 
+              <input type="submit" (click)="scheduleSingleResource(resource.value, date.value,  id)" 
 
               >
             </form>
+            <div class="text-danger">
+           <p> {{userMsg}} </p>
         </div>
+      </div>
 
+<!-- -------------------------SCHEDULE RESOURCE TO RESOURCE------------------ -->
+<h1>Schedule resource-resource</h1>
+        <form>
+            Date<br>
+            <input type="date" name="date" #date><br>
+            Resource 1<br>
+            <select #resource1>
+                <option name="resource" *ngFor="let resource of resources | async" [id]="resource.data.title" [value]="resource.data.title">{{resource.data.title}}</option>
+            </select>
 
+            Resource 2<br>
+            <select #resource2>
+                <option name="resource" *ngFor="let resource of resources | async" [id]="resource.data.title" [value]="resource.data.title">{{resource.data.title}}</option>
+            </select> 
+            <input type="submit" (click)="scheduleResourceToResource(resource1.value, resource2.value, date.value,  id)" 
+
+            >
+          </form>
+          <div class="text-danger">
+        <p> {{userMsg}} </p>
+        </div>
+<!-- ------------------------------------------------------------------------ -->
 
 </div>
-<div *ngIf="loadedDisplay==='overview'" class="col-sm-8 bg-info text-white full-height"><h1 class="text-center">Calendar</h1>
-
+<div *ngIf="loadedDisplay==='overview'" class="col-sm-8 leash-bg-white text-white full-height">
+  <br>
   <app-calendar-overview></app-calendar-overview>
 </div>
-<div *ngIf="loadedDisplay==='resources'" class="col-sm-8 bg-info text-white full-height">
+<div *ngIf="loadedDisplay==='resources'" class="col-sm-8 leash-bg-white text-white full-height">
 <app-calendar></app-calendar>
 </div>
 
