@@ -34,9 +34,9 @@ export class DatabaseService implements OnInit {
   public registeredEmails = []; //holds a list of all registered emails on service
 
 
-  private loadedCompany: string; //holds the reference to the company that the user is signed in with
+  public loadedCompany: string; //holds the reference to the company that the user is signed in with
   private loadedUser: any; // holds the reference to the signed in user
-  private loadedResourceDates: any; //dates that a resource has been scheduled for
+  public loadedResourceDates: any; //dates that a resource has been scheduled for
   private loadedResourceToResource: any; //resource-resource scheduling information (dates and titles)
   constructor(private router: Router, private afs: AngularFirestore) { 
   }
@@ -211,6 +211,7 @@ return this.afs.collection('users').ref.get().then(function(querySnapshot) {
 //----------------------------------------------------------------------------------
 
     getScheduledDates(resource) {//returns all dates schedules within a specific resources collection in DB
+        
         let _this = this;
         this.loadedResourceDates = []; //resets array to empty before beginning
         return this.afs.collection("companies").doc(this.loadedCompany).collection('resources').ref.where('title', '==', resource).get().then(function(querySnapshot)
@@ -221,7 +222,8 @@ return this.afs.collection('users').ref.get().then(function(querySnapshot) {
                     _this.loadedResourceDates.push(data['start'][i]);
                     }
                 });
-            });            
+            });   
+      
     }
 
     getResourceToResource(resource) { // gets resource-resource scheduling data from specified resource's collection
@@ -233,10 +235,11 @@ return this.afs.collection('users').ref.get().then(function(querySnapshot) {
                     let data = doc.data();
                     _this.loadedResourceToResource = data['resourceToResource']; //set local loadedResourceToResource to that of data stored in 'resourceToResource' field of specified resource document in DB
                 });
-            });            
+                console.log(' get resoures complete')   
+            })            
     }
 
-  testAddDate(resource, date) { // ad scheduled data data to resource and schedule collections in DB
+    scheduleSingleResource(resource, date) { // ad scheduled data data to resource and schedule collections in DB
     this.loadedResourceDates.push(date); //push the newly added date to the array of scheduled dates
     let collectionRef = this.afs.collection('companies/').doc(this.loadedCompany).collection('resources'); // get specified resource document from DB
     collectionRef.ref.where("title", "==", resource)
@@ -254,20 +257,22 @@ return this.afs.collection('users').ref.get().then(function(querySnapshot) {
     })
 }
 
-scheduleResourceToResource(resource, date) { //adds resource-resource scheduling data to specified resource document in DB
+scheduleResourceToResource(originalResource, scheduledResource, date) { //adds resource-resource scheduling data to specified resource document in DB
     let __this = this;
-    this.getResourceToResource(resource).then(function(){ // call this to populate the loadedResourceToResource array with the pre existing data from DB
-    __this.loadedResourceToResource[0][date] = resource; // add new key value pair to the object inside array, with the start date and the  title of the resource which has been scheduled to resource x
-    let collectionRef = __this.afs.collection('companies/').doc(__this.loadedCompany).collection('resources');
-    collectionRef.ref.where("title", "==", resource) // get the document from DB for specified resource
-        .get()
-        .then(querySnapshot => {
-            querySnapshot.forEach((doc) => {
-                doc.ref.update({
-                    resourceToResource: __this.loadedResourceToResource //update 'resourceToResource' field in document, adding newly scheduled date and resource
+    return this.getResourceToResource(originalResource).then(function(){ // call this to populate the loadedResourceToResource array with the pre existing data from DB
+        __this.loadedResourceToResource[0][date] = scheduledResource; // add new key value pair to the object inside array, with the start date and the  title of the resource which has been scheduled to resource x
+    }).then(function(){
+        let collectionRef = __this.afs.collection('companies/').doc(__this.loadedCompany).collection('resources');
+        collectionRef.ref.where("title", "==", originalResource) // get the document from DB for specified resource
+            .get()
+            .then(querySnapshot => {
+                querySnapshot.forEach((doc) => {
+                    doc.ref.update({
+                        resourceToResource: __this.loadedResourceToResource //update 'resourceToResource' field in document, adding newly scheduled date and resource
+                    })
                 })
-            })
-            console.log('R to R scheduled for ' + resource)
+                console.log('R to R scheduled for ' + originalResource)
+                console.log(__this.loadedResourceToResource);
         })
     })
 }
@@ -278,11 +283,8 @@ scheduleResourceToResource(resource, date) { //adds resource-resource scheduling
       collectionRef.ref.where("title", "==", resourceTitle).where("start", "==", dateID) // documents from the loaded companies schedule document where the title and start date match
           .get()
           .then(querySnapshot => {
-              querySnapshot.forEach((doc) => { //empty the data from each document
-                  doc.ref.update({
-                      title: '',
-                      start: ''
-                  }).then(function(){
+              querySnapshot.forEach((doc) => { //delete each document that matches
+                  doc.ref.delete().then(function(){
                       console.log("Document successfully deleted!");
                   }).catch(function(error) {
                       console.error("Error removing document: ", error);
@@ -320,6 +322,24 @@ scheduleResourceToResource(resource, date) { //adds resource-resource scheduling
         })
   }
 
+  deleteResourceData(resourceTitle){ // deletes all scheduling data related to a resource
+    let collectionRef = this.afs.collection('companies/').doc(this.loadedCompany).collection('schedule'); 
+    collectionRef.ref.where("title", "==", resourceTitle) // documents from the loaded companies schedule document where the title matches the specified resource
+        .get()
+        .then(querySnapshot => {
+            querySnapshot.forEach((doc) => { //delete each document that matches
+                doc.ref.delete().then(function(){
+                    console.log("Document successfully deleted!");
+                }).catch(function(error) {
+                    console.error("Error removing document: ", error);
+                });
+            });
+        })
+        .catch(function(error) {
+            console.log("Error getting documents: ", error);
+        });
+  }
+
 //----------------------------------------------------------------------------------
 //-----------------------Resource events--------------------------------------------
 //----------------------------------------------------------------------------------
@@ -343,7 +363,23 @@ scheduleResourceToResource(resource, date) { //adds resource-resource scheduling
   }
 
   deleteResource(resourceId) { // deletes specified resource document from DB
-      this.afs.collection('companies/').doc(this.loadedCompany).collection('resources').doc(resourceId).delete();
+    let _this = this;
+    let resourceTitle="";
+      var docRef = this.afs.collection('companies/').doc(this.loadedCompany).collection('resources').doc(resourceId);
+      docRef.ref.get().then(function(doc) {
+            let data=doc.data();
+            console.log("Document data:", doc.data());
+            resourceTitle = data['title'];
+            console.log('resource title is')
+            console.log(resourceTitle);
+            console.log(data['title'])
+    }).catch(function(error) {
+        console.log("Error getting document:", error);
+    }).then(function(){
+      _this.afs.collection('companies/').doc(_this.loadedCompany).collection('resources').doc(resourceId).delete();
+      _this.deleteResourceData(resourceTitle);
+    })
+
   }
 
   editResource(name, note, group, schedulingDepend) { // edits specified resource document, updating only the specified fields
@@ -391,11 +427,11 @@ editGroup(note) { // edits specified group document, updating only the specified
 //----------------------------------------------------------------------------------
 //-----------------------Filtering events--------------------------------------------
 //----------------------------------------------------------------------------------
-filterByGroup(group:any){
+filterByGroup(group:any){ //sets the resources observable to include only those in the specified group
     this.resourcesCol = this.afs.collection('companies/').doc(this.loadedCompany).collection('resources', ref =>{
-            return ref.where("group", "==", group);
+            return ref.where("group", "==", group); //get resource documents where the group matched the specified group
     })
-        this.resources = this.resourcesCol.valueChanges();
+        this.resources = this.resourcesCol.valueChanges(); //set the resources observable to the results of query
         console.log('FILTER function running woth argument ' + group)
         console.log(this.resources);
         this.resources.forEach(item => {
