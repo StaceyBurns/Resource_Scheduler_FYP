@@ -1,7 +1,9 @@
-import { Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild, Input} from '@angular/core';
 import * as moment from 'moment';
 import {DatabaseService} from '../shared/database/database.service';
-// import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs/Observable';
+
+import {Group} from '../shared/interfaces/interfaces';
 
 let now = moment().format('LLLL');
 
@@ -31,6 +33,8 @@ export class CalendarComponent implements OnInit {
     this.db.onSignIn();
     this.resources = this.db.resources;
     this.resource = this.db.resource;
+    console.log('group');
+    console.log(this.group);
 
  
   }
@@ -47,7 +51,7 @@ export class CalendarComponent implements OnInit {
   calSelectedResource:any;
 
 // calDisplay = this.dayString + ',' + this.dayNum + ',' + this.monthString + ',' + this.year;
-calDisplay = this.monthString + ',' + this.year;
+calDisplay = this.monthString + ', ' + this.year;
 d = new Date();
 days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 months = ["NaM", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
@@ -143,7 +147,8 @@ deleteCalEvent(dateID, resourceTitle){
 
 
 
-
+@Input() group:Observable<Group>;
+@Input() view:string;
 
 
 

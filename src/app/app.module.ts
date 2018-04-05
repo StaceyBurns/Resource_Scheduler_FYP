@@ -77,7 +77,6 @@ var firebaseConfig = {
     CalendarRowComponent,
     ResourceAddComponent,
     CalendarOverviewComponent,
-    CalendarComponent,
     UserProfileComponent,
     LoginPageComponent,
     RegisterPageComponent,
@@ -110,7 +109,7 @@ var firebaseConfig = {
     MatInputModule,
     BrowserAnimationsModule
   ],
-  providers: [DatabaseService, AuthService, AuthGuard, CalendarOverviewComponent],
+  providers: [DatabaseService, AuthService, AuthGuard, CalendarOverviewComponent, CalendarComponent],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

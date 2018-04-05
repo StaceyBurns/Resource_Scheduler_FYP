@@ -1,10 +1,12 @@
 
-    <h1>{{ ( resource | async)?.title }}</h1>
+    <h1 class="text-center leash-10-pc-margin">{{ ( resource | async)?.title }}</h1>
     <h3>Notes</h3>
     <p>{{ ( resource | async)?.note }}</p>
     <div *ngIf="(resource | async)?.group !='noDependencySelected'"  class="bg-light"> 
     <h3>Scheduling</h3>
     <p>This resource can only be scheduled with resources in the group <b>{{(resource | async)?.group}}</b></p>
     </div> 
+    <h3>Group</h3>
+    <p>{{ ( resource | async)?.group }}</p>
 
 

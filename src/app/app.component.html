@@ -1,4 +1,6 @@
-<app-header *ngIf="router.url != '/login'"></app-header>
+<app-header *ngIf="router.url != '/login'"></app-header> 
+<!-- don't show the header on the login page -->
 <div class="container-fluid">
         <router-outlet></router-outlet>
+        <!-- Show the output of the router outlet e.g. output the component for selected route here -->
 </div>

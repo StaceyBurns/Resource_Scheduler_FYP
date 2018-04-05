@@ -7,21 +7,77 @@ body{
 form, input, label, p {
   color: black !important;
 }
+.leash-bg-dark{
+  background-color: #515151;
+}
 .leash-bg-deep-red{
   background-color: #931A3D;
 }
 .leash-bg-bright-red{
-  background-color: #dc2315 ;
+  background-color: #dc2315;
 }
 .leash-bg-yellow{
   background-color: #ffc724;
+}
+.leash-bg-light{
+  background-color: lightgrey;
+}
+.leash-bg-white{
+  background-color: whitesmoke;
+}
+.leash-text-deep-red{
+  color: #fbb827;
+}
+.leash-bg-dark-yellow {
+  background-color: #ca990a;
+}
+.leash-bg-orange{
+  background-color: #f58b1f;
+}
+.leash-text-yellow{
+  color: #fbb827;
+}
+.leash-text-white{
+  color: #fff;
+}
+.leash-text-dark{
+  color: #515151;
+}
+.leash-border-light{
+  border: 1px solid #cca83e;
+}
+.leashactive{
+  background-color: #515151;
+  color: #fff;
+}
+.leashactiveYellow{
+  background-color: #ffc724;
+}
+.leash-inline-block{
+  display: inline-block;
+}
+.no-padding-margin{
+  padding:0;
+  margin: 0;
+}
+.leash-20-pc-margin{
+  margin-top: 10%;
+}
+.leash-10-pc-margin{
+  margin-top: 5%;
+}
+.leash-10-pc-margin-left{
+  margin-left: 10%;
+}
+#schedule-radio-buttons btn.active{
+  background-color: firebrick;
 }
 nav {
   width: 100%;
   white-space: nowrap;
 }
 .navbar-nav a:hover {
-  background-color: #dc2315 !important;
+  background-color: #ffc724 !important;
 }
 .nav-active {
   background-color: #ca990a !important;
@@ -37,6 +93,9 @@ nav {
   max-height: 100%;
   width: auto;
 }
+/* .navbar{
+  border: none;
+} */
 nav .dropdown .dropbtn {
   font-size: 16px;    
   border: none;
@@ -50,20 +109,15 @@ nav .dropdown .dropbtn {
 .loginPage{
   margin-bottom: 100px;
 }
-
+/* -------------------scheduler------------- */
 .even { background-color:pink; }
 .odd { background-color:lightgoldenrodyellow; }
 .full-height {
     height: 100%;
     min-height: 1000px;
   }
-  /* .container-full {
-    margin: 0 auto;
-    max-width: 100%;
-    height: 100%;
-    padding:0;
-  } */
-  .schedule-list-resource{
+
+.schedule-list-resource{
     height: 100px;
   }
 .resource-heading-schedule{
@@ -83,7 +137,7 @@ nav .dropdown .dropbtn {
 }
 
 #customCal .calendar-size {
-  background-color:  #9999ff;
+  background-color: whitesmoke;
   overflow: auto;
   white-space: nowrap;
 } 
@@ -94,35 +148,56 @@ nav .dropdown .dropbtn {
   white-space: nowrap;
 }
 #customCal .calendar-row-size {
-  background-color: #3f3;
   overflow: auto;
   width: 100%;
 } 
 
 #customCal th{
   width: 200px;
-  background-color: purple;
-  border: 3px orange;
+  background-color: #515151;
 
 }
 #customCal .calendar-resource-head{
-  background-color: purple;
+  background-color: #515151;
   color: whitesmoke;
   font-weight: bold;
 }
-/* #customCal tr{
-  /* background-color:red; 
-} */
+
 #customCal td{
   background-color: #ebf0fa;
-  color: #b30047;
   font-weight: bold;
   border: 1px #03f3;
   width: 200px;
-  height:40px;
+  height:100px;
   text-align: center;
 } 
-
+.tr-resource{
+  height: 110px;
+}
+/* --------------- */
+.fa {
+  color: #fbb827;
+  margin-left: 10px;
+}
+.fa-trash {
+  color:  #fff;
+  cursor: pointer;
+}
+.tr-resource .fa-trash {
+  color:  #dc2315;
+  cursor: pointer;
+}
+.fa-edit {
+  color:   #ffc724;
+  cursor: pointer;
+}
+.fa-plus-circle {
+  color:   #fff;
+  cursor: pointer;
+}
+.list-group-item{
+  cursor:pointer;
+}
 
 
 

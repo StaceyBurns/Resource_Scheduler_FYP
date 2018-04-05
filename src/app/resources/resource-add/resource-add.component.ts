@@ -28,6 +28,7 @@ export class ResourceAddComponent implements OnInit {
   resource: Observable<Resource>;
   groups: any;
   group: Observable<Group>;
+  userMsg:string;
 
   getResource(resourceId){
     this.db.getResource(resourceId);
@@ -39,6 +40,7 @@ export class ResourceAddComponent implements OnInit {
   addResource(name, note, group, schedulingDepend){
     this.db.addResource(name, note, group, schedulingDepend);
     console.log('Adding resource '+name +' to group ' +group);
+    this.userMsg = name + ' added!'
   }
 
 

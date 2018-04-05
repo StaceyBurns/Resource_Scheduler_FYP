@@ -1,13 +1,19 @@
 <div id="customCal">
-    <table class="calendar-size">
+  <div class="col-md-4 col-md-offset-4 text-center">
+    <br>
+    <button (click)= "prevMonth()" class="leash-inline-block btn btn-md leash-bg-orange pull-left"><fa [name]="'arrow-left'" [size]=1></fa></button>
+    <h1 class="leash-inline-block leash-10-pc-margin-left">{{calDisplay}}</h1>
+    <button (click)= "nextMonth()" class="leash-inline-block btn btn-md leash-bg-orange leash-10-pc-margin-left pull-right"><fa [name]="'arrow-right'" [size]=1></fa></button> <br><br>
+  </div>
+    <table class="calendar-size leash-10-pc-margin">
       <thead>
-    <tr>
+    <!-- <tr>
       <th class="col-xl-12 calendar-size leash-inline-block">
           <button (click)= "prevMonth()" class="leash-inline-block">Prev Month</button>
           <h1 class="leash-inline-block">{{calDisplay}}</h1>
           <button (click)= "nextMonth()" class="leash-inline-block">Next Month</button>
       </th>
-    </tr>
+    </tr> -->
 
 
     <tr>
@@ -20,17 +26,37 @@
         </th>
     </tr>
   </thead>
-
-      <tr class="list-group-item text-muted tr-resource" *ngFor = "let resource of resources | async">  
-        <td class="calendar-row calendar-resource-head">{{resource.data.title}}</td>
+    <div *ngIf="view =='groups'">
+        <div *ngFor = "let resource of resources | async">
+      <div *ngIf="group == resource.data.group" class="list-group-item text-muted tr-resource">  
+        <tr>
+        <td class="calendar-row calendar-resource-head align-middle"><br>{{resource.data.title}}</td>
         <td class="calendar-row" id="{{day.dateID}}"  *ngFor="let day of daysInMonth">
           <div *ngIf="resource.data.start.includes(day.dateID)"> 
             <p>{{resource.data.title}}</p>
-            <p *ngIf="resource.data.schedulingDependency !='noDependencySelected'">{{resource.data.schedulingDependency}}</p>
             </div>
             <p *ngIf="resource.data.resourceToResource[0]">{{resource.data.resourceToResource[0][day.dateID]}}</p>
           <fa *ngIf="resource.data.start.includes(day.dateID)" (click)="editCalEvent(day.dateID, resource.data.title)" [name]="'trash'" [size]=1></fa>
           </td>
+        
         </tr>
+      </div>
+    </div>
+      </div>
+
+
+      <div *ngIf="view =='resourcesView'">
+        <tr class="list-group-item text-muted tr-resource" *ngFor = "let resource of resources | async">  
+            <td class="calendar-row calendar-resource-head align-middle"><br>{{resource.data.title}}</td>
+            <td class="calendar-row" id="{{day.dateID}}"  *ngFor="let day of daysInMonth">
+              <div *ngIf="resource.data.start.includes(day.dateID)"> 
+                <p>{{resource.data.title}}</p>
+                </div>
+                <p *ngIf="resource.data.resourceToResource[0]">{{resource.data.resourceToResource[0][day.dateID]}}</p>
+              <fa *ngIf="resource.data.start.includes(day.dateID)" (click)="editCalEvent(day.dateID, resource.data.title)" [name]="'trash'" [size]=1></fa>
+              </td>
+            </tr>
+          </div>
+
     </table>
 </div>

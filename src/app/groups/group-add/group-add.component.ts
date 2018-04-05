@@ -23,6 +23,7 @@ export class GroupAddComponent implements OnInit {
 
   groups: any;
   group: Observable<Group>;
+  userMsg:string;
 
   getGroup(groupId){
     this.db.getGroup(groupId);
@@ -33,6 +34,7 @@ export class GroupAddComponent implements OnInit {
   }
   addGroup(name, note){
     this.db.addGroup(name, note);
+    this.userMsg = name + ' added!';
 
   }
 

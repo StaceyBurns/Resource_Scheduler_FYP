@@ -11,7 +11,7 @@ export class UserProfileComponent implements OnInit {
   constructor(public auth: AuthService) { }
 
   ngOnInit() {
-    this.companyName = localStorage.getItem('companyName');
+    this.companyName = localStorage.getItem('companyName'); //get the company name from local storage to display in view
   }
 
 }

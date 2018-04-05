@@ -27,11 +27,13 @@ export class ResourceEditComponent implements OnInit {
   resources: any;
   groups: any;
   group: Observable<Group>;
+  userMsg:string;
   @Input() resource:Observable<Resource>;
 
   saveEdit(name, note, group, schedulingDepend){
     console.log('Name: '+name +' Note ' +note);
     this.db.editResource(name, note, group, schedulingDepend);
+    this.userMsg = "Updated!";
   }
 
 }

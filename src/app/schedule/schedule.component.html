@@ -1,99 +1,110 @@
-<div class="row">
+<div class="btn-group btn-group-justified" id="schedule-radio-buttons" data-toggle="buttons">
+    <label class="btn leash-bg-dark-yellow leash-border-light" [ngClass]="{leashactiveYellow: loadedDisplay ==  'overview'}">
+      <input type="radio" name="overview" id="overview" (click) ="loadedDisplay='overview'"> <b class="leash-text-white">Overview</b>
+    </label>
+    <label class="btn leash-bg-dark-yellow leash-border-light" [ngClass]="{leashactiveYellow: loadedDisplay ==  'resourcesView'}">
+      <input type="radio" name="resources" id="resources" (click) ="loadedDisplay='resourcesView'"> <b class="leash-text-white">Schedule</b>
+    </label>
+    <label class="btn leash-bg-dark-yellow leash-border-light" [ngClass]="{leashactiveYellow: loadedDisplay ==  'groups'}">
+      <input type="radio" name="groups" id="groups" (click) ="loadedDisplay='groups'"> <b class="leash-text-white">Groups</b>
+    </label>
+  </div>
+
+
+<div class="row" *ngIf="loadedDisplay==='overview'">
   <div class="col-sm-4 leash-bg-light text-white full-height">
-    <div class="btn-group btn-group-justified" data-toggle="buttons">
-        <label class="btn btn-primary">
-          <input type="radio" name="overview" id="overview" (click) ="loadedDisplay='overview'"> Overview
-        </label>
-        <label class="btn btn-primary">
-          <input type="radio" name="resources" id="resources" (click) ="loadedDisplay='resources'"> Resources
-        </label>
-        <label class="btn btn-primary">
-          <input type="radio" name="groups" id="groups" (click) ="loadedDisplay='groups'"> Groups
-        </label>
-      </div>
-      
-<!-- --------------------------------------------resource view------------------------------------------------ -->
-    <ul class="list-group text-muted" *ngIf="loadedDisplay==='resources'">
+    
+    <ul class="list-group text-muted" *ngIf="loadedDisplay==='resourcesView'">
       <li class="text list-group-item schedule-list-resource" *ngFor="let resource of resources | async">
        <h4> {{resource.data.title}} </h4>
       </li>
     </ul>
-
-<!-- --------------------------------------------group view------------------------------------------------ -->
-    <div *ngIf="loadedDisplay==='groups'">
-        <form>
-            Filter by group
-            <br>
-            <select #theGroup name="selectGroup">
-                <option name="schedulingDepend" value="noDependencySelected">-</option>
-                <option name="theGroup" *ngFor="let group of groups | async" [id]="group.data.name" [value]="group.data.name">{{group.data.name}}</option>
-            </select>
-            <input type="submit" value="Go!" (click)="filterByGroup(theGroup.value)">
-          </form>
+      
 
 
-
-      <div  *ngFor="let resource of resources  | async">
-              <p *ngIf="resource.data.group == selectedGroup">{{resource.data.title}}</p>
-              <p *ngIf="selectedGroup == 'noDependencySelected'">{{resource.data.title}}</p>
-      </div> 
-    </div>      
-
-
-<!-- --------------------------------------------full view------------------------------------------------ -->
+<!-- --------------------------------------------overview------------------------------------------------ -->
       <div *ngIf="loadedDisplay==='overview'">
-        <h1>Show the full view!</h1>
-          <h2>Add directly to the schedule here!</h2>
+        <h2 class="text-center">Schedule Resources</h2>
+        <hr>
+ 
 <!-- -------------------------SCHEDULE SINGLE RESOURCE------------------ -->
-<h1>Schedule a resource</h1>
-          <form>
-              Date<br>
-              <input type="date" name="date" #date><br>
-              Resource<br>
-              <select #resource>
+<button class="btn btn-md btn-block leash-bg-yellow leash-10-pc-margin" (click)="schedulingType='singleResource'"><b>Schedule single resource</b> <fa [name]="'plus-circle'" [size]=2></fa></button>
+          <div *ngIf="schedulingType=='singleResource'">
+            <form>
+              <label for="date">Date</label>
+              <input type="date" type="date" class="form-control input-lg"  #date>
+
+              <label for="resource">Resource</label>
+              <select class="btn btn-md btn-block" #resource>
                   <option name="resource" *ngFor="let resource of resources | async" [id]="resource.data.title" [value]="resource.data.title">{{resource.data.title}}</option>
               </select>
-              <input type="submit" (click)="scheduleSingleResource(resource.value, date.value,  id)" 
-
-              >
+              <input type="submit" value="Schedule!" class="btn btn-md btn-block leash-bg-white leash-10-pc-margin" (click)="scheduleSingleResource(resource.value, date.value,  id)" >
             </form>
-            <div class="text-danger">
-           <p> {{userMsg}} </p>
+            <div class="text-center">
+           <p class="leash-text-yellow"><br> {{userMsg}} </p>
         </div>
       </div>
 
 <!-- -------------------------SCHEDULE RESOURCE TO RESOURCE------------------ -->
-<h1>Schedule resource-resource</h1>
+<button class="btn btn-md btn-block leash-bg-orange leash-10-pc-margin" (click)="schedulingType='resourceToResource'"><b>Schedule resource-resource</b> <fa [name]="'plus-circle'" [size]=2></fa></button>
+<div *ngIf="schedulingType=='resourceToResource'">
         <form>
-            Date<br>
-            <input type="date" name="date" #date><br>
-            Resource 1<br>
-            <select #resource1>
-                <option name="resource" *ngFor="let resource of resources | async" [id]="resource.data.title" [value]="resource.data.title">{{resource.data.title}}</option>
+            <label for="date">Date</label>
+            <input type="date" type="date" class="form-control input-lg"  #date>
+           
+            <label for="resource1">Resource 1</label>
+            <select class="btn btn-md btn-block" #resource1>
+                <option name="resource1" *ngFor="let resource of resources | async" [id]="resource.data.title" [value]="resource.data.title">{{resource.data.title}}</option>
             </select>
 
-            Resource 2<br>
-            <select #resource2>
-                <option name="resource" *ngFor="let resource of resources | async" [id]="resource.data.title" [value]="resource.data.title">{{resource.data.title}}</option>
+            <label for="resource2">Resource 2</label>
+            <select class="btn btn-md btn-block" #resource2>
+                <option name="resource2" *ngFor="let resource of resources | async" [id]="resource.data.title" [value]="resource.data.title">{{resource.data.title}}</option>
             </select> 
-            <input type="submit" (click)="scheduleResourceToResource(resource1.value, resource2.value, date.value,  id)" 
+            <input type="submit" value="Schedule!" class="btn btn-md btn-block leash-bg-white leash-10-pc-margin"  (click)="scheduleResourceToResource(resource1.value, resource2.value, date.value,  id)" 
 
             >
           </form>
-          <div class="text-danger">
-        <p> {{userMsg}} </p>
+          <div class="text-center">
+        <p class="leash-text-yellow"> <br> {{userMsg}} </p>
         </div>
-<!-- ------------------------------------------------------------------------ -->
+      </div>
+</div>
 
 </div>
 <div *ngIf="loadedDisplay==='overview'" class="col-sm-8 leash-bg-white text-white full-height">
   <br>
   <app-calendar-overview></app-calendar-overview>
 </div>
-<div *ngIf="loadedDisplay==='resources'" class="col-sm-8 leash-bg-white text-white full-height">
-<app-calendar></app-calendar>
+</div>
+
+<!-- --------------------------------------------groups view------------------------------------------------ -->
+<div class="row" *ngIf="loadedDisplay==='groups'">
+<div class="col-sm-12 leash-bg-white text-white full-height">
+    <div *ngIf="loadedDisplay==='groups'">
+        <form>
+            <h3 class="text-center">Filter schedule by group</h3>
+            <br>
+            <div class="col-md-4 col-md-offset-4">
+            <select class="btn btn-md btn-block" #theGroup name="selectGroup">
+                <option name="schedulingDepend" value="noDependencySelected">-</option>
+                <option name="theGroup" *ngFor="let group of groups | async" [id]="group.data.name" [value]="group.data.name">{{group.data.name}}</option>
+            </select>
+            <input type="submit" value="Go!"class="btn btn-md btn-block leash-bg-yellow" (click)="filterByGroup(theGroup.value)">
+          </div>
+          </form>
+    </div>
+    <br>
+    <app-calendar [group]='selectedGroup' [view]='loadedDisplay'></app-calendar>
+  </div>
+</div>
+<!-- --------------------------------------------resource/schedule view------------------------------------------------ -->
+<div class="row" *ngIf="loadedDisplay==='resourcesView'">
+<div class="col-sm-12 leash-bg-white text-white full-height">
+<app-calendar [view]='loadedDisplay'></app-calendar>
+</div>
 </div>
 
 
 
-</div>
+

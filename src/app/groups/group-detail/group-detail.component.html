@@ -1,5 +1,8 @@
  
-  <h1>{{ ( group | async)?.name }}</h1>
+  <h1 class="text-center leash-10-pc-margin">{{ ( group | async)?.name }}</h1>
   <h3>Notes</h3>
-  <p>{{ ( group | async)?.note }}</p>  
-  
+  <p (name)="value">{{ ( group | async)?.note }} </p>  
+  <h3>Resources</h3>
+  <div  *ngFor="let resource of resources  | async">
+    <p *ngIf="(group| async)?.name == resource.group">{{ resource.data.title}}</p>
+</div> 

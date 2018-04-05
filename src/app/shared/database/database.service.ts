@@ -437,5 +437,6 @@ filterByGroup(group:any){ //sets the resources observable to include only those 
         this.resources.forEach(item => {
             console.log('Item:', item);
         });
+        console.log(this.resources);
     }
 }

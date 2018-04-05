@@ -21,10 +21,12 @@ export class GroupEditComponent implements OnInit {
   }
 
   groups: any;
+  userMsg:string;
   @Input() group:Observable<Group>;
 
   saveEdit(note){
     this.db.editGroup(note);
+    this.userMsg = 'Updated!';
   }
 
 }
