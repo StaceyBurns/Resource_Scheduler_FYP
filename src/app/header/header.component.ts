@@ -18,8 +18,8 @@ export class HeaderComponent implements OnInit {
   }
 
    logout() {
-    this.authService.signOut();
-    this.router.navigate(['/login']);
+    this.authService.signOut(); //signs the user out of the app
+    this.router.navigate(['/login']); //reroutes the user to the login page
   }
 
 }

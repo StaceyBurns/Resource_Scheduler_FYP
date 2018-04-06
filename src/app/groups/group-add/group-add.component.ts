@@ -16,6 +16,8 @@ export class GroupAddComponent implements OnInit {
     this.db.ngOnInit();
     this.groups = this.db.groups;
     this.group = this.db.group;
+    this.name ="";
+    this.note ="";
   }
 
   ngOnInit() {
@@ -24,15 +26,10 @@ export class GroupAddComponent implements OnInit {
   groups: any;
   group: Observable<Group>;
   userMsg:string;
+  name:string;
+  note:string;
 
-  getGroup(groupId){
-    this.db.getGroup(groupId);
-    this.group = this.db.group;
-  }
-  deleteGroup(groupId){
-    this.db.deleteGroup(groupId);
-  }
-  addGroup(name, note){
+  addGroup(name, note){ //adds group to database, gives user feedback
     this.db.addGroup(name, note);
     this.userMsg = name + ' added!';
 

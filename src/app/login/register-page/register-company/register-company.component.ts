@@ -20,7 +20,7 @@ export class RegisterCompanyComponent implements OnInit {
   userForm: FormGroup;
   newUser = false; // to toggle login or signup form 
   passReset = false; // set to true when password reset is triggered
-  formErrors: FormErrors = {
+  formErrors: FormErrors = { //errors when form requirements arent met
     'email': '',
     'password': '',
     'company': '',
@@ -43,8 +43,8 @@ export class RegisterCompanyComponent implements OnInit {
   constructor(private fb: FormBuilder, private auth: AuthService, private router: Router, private db: DatabaseService) { }
 
   ngOnInit() {
-    this.buildForm();
-    this.registeredEmails = this.db.registeredEmails;
+    this.buildForm(); //set up the form
+    this.registeredEmails = this.db.registeredEmails; 
   }
 
   toggleForm() {
@@ -53,15 +53,14 @@ export class RegisterCompanyComponent implements OnInit {
 
   signupCompany() {
     let _this = this;
-    this.db.getRegisteredEmails().then(function(){
-      if(_this.registeredEmails.includes(_this.userForm.value['email'])){
-        console.log('email already exists')
+    this.db.getRegisteredEmails().then(function(){ //get a list of registeres emails from db
+      if(_this.registeredEmails.includes(_this.userForm.value['email'])){ //if email already exists, abord sign up, give user error
         _this.formErrors.email = "Email already in use";
         _this.userForm.controls['email'].setErrors({'invalid': true});
-        } else {
+        } else { //if email doesn't exist, continue with sign up process
           _this.auth.newCompanySignUp(_this.userForm.value['email'], _this.userForm.value['password'], _this.userForm.value['company']).then(function() {
           _this.db.registerNewCompany(_this.userForm.value['email'], _this.userForm.value['company']);
-          this.registeredEmails =[];
+          this.registeredEmails =[]; //empty the registered emails arrays 
           this.db.registeredEmails = [];
         })
         }
@@ -69,13 +68,7 @@ export class RegisterCompanyComponent implements OnInit {
 
   }
 
-  // private afterSignIn() {
-  //   // Do after login stuff here, such router redirects, toast messages, etc.
-  //   this.router.navigate(['/schedule']);
-  // }
-
-
-  buildForm() {
+  buildForm() { //set the form requirements
     this.userForm = this.fb.group({
       'email': ['', [
         Validators.required,

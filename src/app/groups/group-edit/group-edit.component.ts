@@ -22,9 +22,9 @@ export class GroupEditComponent implements OnInit {
 
   groups: any;
   userMsg:string;
-  @Input() group:Observable<Group>;
+  @Input() group:Observable<Group>; //group data passed from parent
 
-  saveEdit(note){
+  saveEdit(note){ //updates group in db
     this.db.editGroup(note);
     this.userMsg = 'Updated!';
   }

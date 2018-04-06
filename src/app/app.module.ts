@@ -33,7 +33,6 @@ import { DropdownDirective } from './shared/dropdown.directive';
 
 import { MomentModule } from 'angular2-moment';
 import { CalendarComponent } from './calendar/calendar.component';
-import { CalendarRowComponent } from './calendar/calendar-row/calendar-row.component';
 import { CalendarOverviewComponent } from './calendar/calendar-overview/calendar-overview.component';
 import { CalendarModule} from "ap-angular2-fullcalendar";
 
@@ -74,7 +73,6 @@ var firebaseConfig = {
     HeaderComponent,
     DropdownDirective,
     CalendarComponent,
-    CalendarRowComponent,
     ResourceAddComponent,
     CalendarOverviewComponent,
     UserProfileComponent,

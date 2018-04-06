@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
-
 import { AuthService } from '../../core/auth.service';
 
 type UserFields = 'email' | 'password';
@@ -15,11 +14,10 @@ type FormErrors = { [u in UserFields]: string };
 export class LoginPageComponent {
 
   loginType:string;
-
   userForm: FormGroup;
   newUser = false; // to toggle login or signup form 
   passReset = false; // set to true when password reset is triggered
-  formErrors: FormErrors = {
+  formErrors: FormErrors = { //show errors when form conditions are not met
     'email': '',
     'password': '',
   };
@@ -41,21 +39,21 @@ export class LoginPageComponent {
               private router: Router) { }
 
   ngOnInit(){
-    this.buildForm();
+    this.buildForm(); //set up form
     this.loginType = "login";
   }
 
-  login() {
+  login() { //log the user in
     this.auth.emailLogin(this.userForm.value['email'], this.userForm.value['password'])
     .then(() => this.afterSignIn());
   }
 
-  resetPassword() {
+  resetPassword() { //sends password reset to user email (handled by firebase)
     this.auth.resetPassword(this.userForm.value['email'])
       .then(() => this.passReset = true);
   }
 
-  buildForm() {
+  buildForm() { //set up for validators
     this.userForm = this.fb.group({
       'email': ['', [
         Validators.required,
@@ -94,18 +92,7 @@ export class LoginPageComponent {
     }
   }
 
-
-  /// Social Login
-
-  signInWithGoogle() {
-    this.auth.googleLogin()
-      .then(() => this.afterSignIn());
-  }
-
-
-  /// Shared
-  private afterSignIn() {
-    // Do after login stuff here, such router redirects, toast messages, etc.
+  private afterSignIn() { //reroute the user to schedule page after they are signed in
     this.router.navigate(['/schedule']);
   }
 

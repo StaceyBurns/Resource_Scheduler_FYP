@@ -13,7 +13,6 @@ import {Group} from '../../shared/interfaces/interfaces';
 })
 export class ResourceEditComponent implements OnInit {
 
-
   constructor(private db: DatabaseService) { 
     this.resources = this.db.resources;
     this.resource = this.db.resource;
@@ -30,7 +29,7 @@ export class ResourceEditComponent implements OnInit {
   userMsg:string;
   @Input() resource:Observable<Resource>;
 
-  saveEdit(name, note, group, schedulingDepend){
+  saveEdit(name, note, group, schedulingDepend){ //update edited resource data in db
     console.log('Name: '+name +' Note ' +note);
     this.db.editResource(name, note, group, schedulingDepend);
     this.userMsg = "Updated!";

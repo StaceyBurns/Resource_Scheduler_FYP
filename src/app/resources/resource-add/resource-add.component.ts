@@ -6,6 +6,7 @@ import {Resource} from '../../shared/interfaces/interfaces';
 import {ResourceId} from '../../shared/interfaces/interfaces';
 import {Group} from '../../shared/interfaces/interfaces';
 import {GroupId} from '../../shared/interfaces/interfaces';
+import {FormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-resource-add',
@@ -19,28 +20,32 @@ export class ResourceAddComponent implements OnInit {
 
   ngOnInit(){
     this.db.ngOnInit();
-    this.resources = this.db.resources;
-    this.resource = this.db.resource;
-    this.groups = this.db.groups;
-    this.group = this.db.group;
+    this.resources = this.db.resources; //ser resources to db resources to use in view
+    this.resource = this.db.resource; //set resources observable to db resources to use in view
+    this.groups = this.db.groups; //set groups to db groups to use in view
+    this.group = this.db.group; //set group observable to db group to use in view
+    this.note="";
+    this.name="";
   }
   resources: any;
   resource: Observable<Resource>;
   groups: any;
   group: Observable<Group>;
   userMsg:string;
+  name:string;
+  note:string;
 
-  getResource(resourceId){
+  getResource(resourceId){ //gets data of resource from db
     this.db.getResource(resourceId);
     this.resource = this.db.resource;
   }
-  deleteResource(resourceId){
+  deleteResource(resourceId){ //deletes resource from db
     this.db.deleteResource(resourceId);
   }
-  addResource(name, note, group, schedulingDepend){
+  addResource(name, note, group, schedulingDepend){ //adds resource to db
     this.db.addResource(name, note, group, schedulingDepend);
-    console.log('Adding resource '+name +' to group ' +group);
-    this.userMsg = name + ' added!'
+    this.userMsg = name + ' added!';
+    
   }
 
 

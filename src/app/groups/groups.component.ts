@@ -22,17 +22,18 @@ export class GroupsComponent implements OnInit {
   }
   groups: any;
   group: Observable<Group>;
-  selectedGroupId:string;
+  selectedGroupId:string; //holds reference to the last clicked group
+  activeItem: string; //holds reference to the view that is active, updated in view
 
-  getGroup(groupId){
+  getGroup(groupId){ //gets group data from db
     this.db.getGroup(groupId);
     this.group = this.db.group;
   }
-  deleteGroup(groupId){
+  deleteGroup(groupId){ //deleted group from db
     this.db.deleteGroup(groupId);
     this.selectedGroupId = null;
   }
-  addGroup(name, note){
+  addGroup(name, note){ //adds group to db
     this.db.addGroup(name, note);
 
   }

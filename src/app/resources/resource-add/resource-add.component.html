@@ -3,7 +3,7 @@
 
             <div class="form-group">
               <label for="name">Resource Name</label>
-              <input type="text" [(ngModel)] = "name" class="form-control" name="name" placeholder = "Name...">
+              <input [(ngModel)]="name" type="text" class="form-control" name="name" placeholder = "Name...">
             </div>
 
             <div class="form-group">
@@ -27,7 +27,7 @@
         </select>
         </div>
 
-          <div class="form-group"></div>
+          
             <button type="submit" class="btn btn-primary" value="Add a resource" (click)="addResource(name, note, group.value, schedulingDepend.value)">Save</button>
           </form>
           <br>

@@ -21,6 +21,6 @@ export class ResourceDetailComponent implements OnInit {
 
 name:string;
   resources: any;
-  @Input() resource:Observable<Resource>;
+  @Input() resource:Observable<Resource>; //resource data from parent
  
 }

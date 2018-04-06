@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-
 import {DatabaseService} from '../../shared/database/database.service';
 import { AuthService } from '../../core/auth.service';
 
@@ -19,7 +18,7 @@ export class RegisterPageComponent implements OnInit {
   userForm: FormGroup;
   newUser = false; // to toggle login or signup form 
   passReset = false; // set to true when password reset is triggered
-  formErrors: FormErrors = {
+  formErrors: FormErrors = { //errors when form requirements aren't met
     'email': '',
     'password': '',
     'company': '',
@@ -46,19 +45,19 @@ export class RegisterPageComponent implements OnInit {
   constructor(private fb: FormBuilder, private auth: AuthService, private router: Router, private db: DatabaseService) { }
 
   ngOnInit() {
-    this.buildForm();
-    this.db.getAllCompanies();
-    this.registeredCompanies = this.db.registeredCompanies;
-    this.registeredEmails = this.db.registeredEmails;
+    this.buildForm(); //set up form
+    this.db.getAllCompanies(); //get a list of registered companies from db
+    this.registeredCompanies = this.db.registeredCompanies; //set local array to list of companues
+    this.registeredEmails = this.db.registeredEmails; //set local array to list of registered emails
   }
 
   toggleForm() {
     this.newUser = !this.newUser;
   }
 
-  signup() {
+  signup() { //let user sign up if email is unique
     let _this = this;
-    this.db.getRegisteredEmails().then(function(){
+    this.db.getRegisteredEmails().then(function(){ //check for email in emails array, if exists, abort, if doesn't exist, call allowSugnup function
       if(_this.registeredEmails.includes(_this.userForm.value['email'])){
         _this.formErrors.email = "Email already in use";
         _this.userForm.controls['email'].setErrors({'invalid': true});
@@ -70,32 +69,24 @@ export class RegisterPageComponent implements OnInit {
 
   }
 
-  allowSignup(){
-
+  allowSignup(){ //check if company key exists, if it does, sign the user up and reset arrays, if it doesn't abort and tell user
     if(this.registeredCompanies.includes(this.userForm.value['company'])){
       this.auth.emailSignUp(this.userForm.value['email'], this.userForm.value['password'], this.userForm.value['company']);
       this.registerUserWithCompany(this.userForm.value['email'], this.userForm.value['company']);
       this.registeredEmails =[];
       this.db.registeredEmails = [];
       } else {
-        console.log('invalid company key')
         this.formErrors.company = "invalid company key";
         this.userForm.controls['company'].setErrors({'invalid': true});
       }
 
   }
 
-  // private afterSignIn() {
-  //   // Do after login stuff here, such router redirects, toast messages, etc.
-  //   console.log('after sign in..');
-  //   this.router.navigate(['/schedule']);
-  // }
-
-  private registerUserWithCompany(user, companyKey) {
+  private registerUserWithCompany(user, companyKey) { // call db function to register the user with the company
     this.db.registerUserWithCompany(user, companyKey);
   }
 
-  buildForm() {
+  buildForm() { //set form requirements
     this.userForm = this.fb.group({
       'email': ['', [
         Validators.required,

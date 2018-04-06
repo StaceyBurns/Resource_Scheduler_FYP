@@ -7,13 +7,6 @@
   </div>
     <table class="calendar-size leash-10-pc-margin">
       <thead>
-    <!-- <tr>
-      <th class="col-xl-12 calendar-size leash-inline-block">
-          <button (click)= "prevMonth()" class="leash-inline-block">Prev Month</button>
-          <h1 class="leash-inline-block">{{calDisplay}}</h1>
-          <button (click)= "nextMonth()" class="leash-inline-block">Next Month</button>
-      </th>
-    </tr> -->
 
 
     <tr>
@@ -36,7 +29,7 @@
             <p>{{resource.data.title}}</p>
             </div>
             <p *ngIf="resource.data.resourceToResource[0]">{{resource.data.resourceToResource[0][day.dateID]}}</p>
-          <fa *ngIf="resource.data.start.includes(day.dateID)" (click)="editCalEvent(day.dateID, resource.data.title)" [name]="'trash'" [size]=1></fa>
+          <fa *ngIf="resource.data.start.includes(day.dateID)" (click)="deleteCalEvent(day.dateID, resource.data.title)" [name]="'trash'" [size]=1></fa>
           </td>
         
         </tr>
@@ -53,7 +46,7 @@
                 <p>{{resource.data.title}}</p>
                 </div>
                 <p *ngIf="resource.data.resourceToResource[0]">{{resource.data.resourceToResource[0][day.dateID]}}</p>
-              <fa *ngIf="resource.data.start.includes(day.dateID)" (click)="editCalEvent(day.dateID, resource.data.title)" [name]="'trash'" [size]=1></fa>
+              <fa *ngIf="resource.data.start.includes(day.dateID)" (click)="deleteCalEvent(day.dateID, resource.data.title)" [name]="'trash'" [size]=1></fa>
               </td>
             </tr>
           </div>

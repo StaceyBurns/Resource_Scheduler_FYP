@@ -14,15 +14,11 @@ import {Resource} from '../../shared/interfaces/interfaces';
 })
 export class GroupDetailComponent implements OnInit {
   
-
   constructor(private db: DatabaseService) { } 
 
   ngOnInit() {
     this.resources = this.db.resources;
     this.name = this.group['name'];
-    console.log('group');
-    console.log(this.group['name']);
-    console.log('init')
   }
   ngOnChanges(){
  

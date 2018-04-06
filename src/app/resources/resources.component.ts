@@ -13,7 +13,7 @@ import {ResourceId} from '../shared/interfaces/interfaces';
 })
 
 export class ResourcesComponent implements OnInit {
-  activeItem ='';
+  activeItem =''; //used to toggle between views in view
   editMode: boolean;
 
   constructor(private db: DatabaseService){
@@ -21,24 +21,23 @@ export class ResourcesComponent implements OnInit {
 
   ngOnInit(){
     this.db.onSignIn(); // prevents company reset on page reset
-    this.resources = this.db.resources;
-    this.resource = this.db.resource;
+    this.resources = this.db.resources; //set resources to db resources to use in
+    this.resource = this.db.resource; // set resource observable to db resource to use in view
   }
   resources: any;
   resource: Observable<Resource>;
   selectedResourceId:string;
 
-  getResource(resourceId){
+  getResource(resourceId){ //set data about resource from db
     this.db.getResource(resourceId);
     this.resource = this.db.resource;
   }
-  deleteResource(resourceId){
+  deleteResource(resourceId){ //delete resource from db
     this.db.deleteResource(resourceId);
     this.activeItem = "";
-    this.selectedResourceId = null;
+    this.selectedResourceId = null; // set this to null to hide resource detail component
   }
-  addResource(name, note, group, schedulingDepend){
+  addResource(name, note, group, schedulingDepend){ //add new resource to db
     this.db.addResource(name, note, group, schedulingDepend);
-
   }
 }
